@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useLang } from "../context/LangContext";
 import "./ImpactStories.css";
 
@@ -16,7 +17,7 @@ export default function ImpactStories() {
                 <time className="story-card__date">{story.date}</time>
                 <h3 className="story-card__title">{story.title}</h3>
                 <p className="story-card__excerpt">{story.excerpt}</p>
-                <a href="#" className="story-card__link">{t.stories.readMore} →</a>
+                <Link to="/alumni" className="story-card__link">{t.stories.readMore} →</Link>
               </div>
             </article>
           ))}

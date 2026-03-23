@@ -40,7 +40,7 @@ export default function Navbar() {
           <a href="#home" onClick={(e) => { e.preventDefault(); handleHashLink("#home"); }}>{t.nav.home}</a>
           <Link to="/about" onClick={() => setMenuOpen(false)}>{t.nav.about}</Link>
           <Link to="/apply" onClick={() => setMenuOpen(false)}>{t.nav.apply}</Link>
-          <a href="#alumni" onClick={(e) => { e.preventDefault(); handleHashLink("#alumni"); }}>{t.nav.alumni}</a>
+          <Link to="/alumni" onClick={() => setMenuOpen(false)}>{t.nav.alumni}</Link>
           <a href="#team" onClick={(e) => { e.preventDefault(); handleHashLink("#team"); }}>{t.nav.team}</a>
           <a href="#gallery" onClick={(e) => { e.preventDefault(); handleHashLink("#gallery"); }}>{t.nav.gallery}</a>
           <Link to="/directory" onClick={() => setMenuOpen(false)} className="navbar__directory-link">{t.nav.media}</Link>

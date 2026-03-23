@@ -17,28 +17,26 @@ export const translations = {
     programs: {
       title: "Our Programs",
       items: [
-        { label: "Business & Entrepreneurship Development", percent: 36 },
-        { label: "Civic Leadership", percent: 34 },
-        { label: "Public Management & Governance", percent: 27 },
-        { label: "Education Changemakers (ECM)", percent: 2 },
+        { label: "Business & Entrepreneurship Development", percent: 65 },
+        { label: "Civic Leadership", percent: 19 },
+        { label: "Public Management & Governance", percent: 14 },
+        { label: "Education Changemakers (ECM)", percent: 1 },
         { label: "Water, Sanitation & Hygiene (WASH)", percent: 1 },
       ],
     },
     chapter: {
       title: "RLC Madagascar Chapter",
-      text1: "The RLC Madagascar Chapter brings together alumni who completed their training in South Africa and Senegal under the Young African Leaders Initiative – Regional Leadership Center Southern Africa program. It is a dynamic community of young leaders committed to driving positive change across Madagascar.",
-      text2: "With alumni present in all 21 regions of Madagascar, the Chapter embodies a truly national network. From Antananarivo to Toliara, from Diana to Atsimo-Andrefana, these leaders are active in their communities, applying the skills acquired through the RLC program to support local development, civic engagement, entrepreneurship, and public governance.",
+      text1: "The RLC Madagascar Chapter brings together alumni who completed their leadership training in South Africa and Senegal. It is a community of young leaders committed to driving positive change across Madagascar.",
+      text2: "With alumni present in all 21 regions of Madagascar, the RLC Madagascar Chapter embodies a truly national network. From Antananarivo to Toliara, from Diana to Atsimo-Andrefana, these leaders are active in their communities, applying the skills acquired through the RLC program to support local development, civic engagement, entrepreneurship, and public governance.",
       stats: [
+        { value: 600, prefix: "+", label: "Alumni" },
         { value: 21, label: "Regions covered" },
-        { value: "SA & SN", label: "Training locations" },
-        { value: 99, label: "Alumni" },
-        { value: 14, label: "Southern African countries" },
       ],
     },
     about: {
       title: "About Us",
-      text: "The Regional Leadership Center - Madagascar Chapter (RLC-SA) empowers young Malagasy leaders between the ages of 18–35 years with the necessary skills, tools and opportunities to better serve their communities.",
-      program: "Our seven-week online training program gives participants access to: grant funding, networking, collaboration, tools and resources.",
+      text: "The Regional Leadership Center Southern Africa, supported by the University of South Africa (UNISA), is the legacy of the Young African Leaders Initiative - Regional Leadership Center Southern Africa (YALI RLC SA). Its mission is to develop a generation of professional and innovative young African leaders, ethical and skilled in managing private businesses, civic organizations, and public administrations.",
+      program: "The RLC Southern Africa serves as a regional hub for programs aimed at young leaders in Southern Africa, organizing leadership programs, projects, and activities. The center welcomes young people aged 18 to 35 from fourteen countries: Angola, Botswana, Comoros, Lesotho, Malawi, Madagascar, Mauritius, Mozambique, Namibia, Seychelles, South Africa, Eswatini, Zambia, and Zimbabwe.",
     },
     stats: {
       title: "Our Impact",
@@ -81,7 +79,7 @@ export const translations = {
         { label: "Track Record", value: "Demonstrated commitment to community impact with proven experience in Public Management, Business, Entrepreneurship, or Civic Leadership" },
         { label: "Commitment", value: "Willingness to participate in a seven-week virtual program" },
       ],
-      encouragedTitle: "We especially encourage applications from",
+      encouragedTitle: "We especially encourage applications from the following",
       encouraged: [
         "Women",
         "Minority groups",
@@ -101,7 +99,7 @@ export const translations = {
       title: "About Us",
       story: {
         title: "Our Story",
-        text: "The Regional Leadership Center – Southern Africa (RLC-SA) is a legacy program of the Young African Leaders Initiative, operating from UNISA's Graduate School of Business Leadership. Since 2015, the program has trained over 9,000 young leaders aged 18–35 across 14 Southern African countries in business, entrepreneurship, civic engagement, public management, education, sanitation, and energy.",
+        text: "The Regional Leadership Center – Southern Africa (RLC-SA) is a legacy program of the Young African Leaders Initiative, hosted within the Graduate School of Business Leadership (SBL) of the University of South Africa. Since 2015, the program has trained over 9,000 young leaders aged 18–35 across 14 Southern African countries in entrepreneurship, civic engagement, public management, education, sanitation, and energy.",
       },
       online: {
         title: "Online Training Program",
@@ -126,6 +124,25 @@ export const translations = {
         title: "Sector-Specific Programs",
         text: "RLC-SA has developed specialized training through partnerships, including a collaboration with Power Africa to support young women in the energy sector, and a partnership with the Trevor Noah Foundation focused on education. These programs feature an immersive four-week in-person study experience.",
       },
+    },
+    alumniPage: {
+      title: "Alumni Initiatives",
+      subtitle: "Discover the projects and commitments of RLC Madagascar Chapter alumni",
+      initiativesTitle: "Our Initiatives",
+      testimonialsTitle: "Their Words",
+      initiatives: [
+        { title: "AgroMada Academy", description: "Training program for young rural entrepreneurs in sustainable agriculture. Over 200 young people trained in modern farming techniques across 3 regions.", tags: ["Analamanga", "Business"], alumni: "Andrianantenaina Rakoto", year: "2022", icon: "seedling" },
+        { title: "CivicLab Madagascar", description: "Civic education platform reaching secondary school students. Interactive workshops on democratic participation held in 12 schools.", tags: ["Diana", "Civic Leadership"], alumni: "Lalaina Razafimahefa", year: "2023", icon: "graduation" },
+        { title: "GovConnect", description: "Digital bridge between citizens and local administrations. The app has processed over 1,500 requests in its first year of operation.", tags: ["Analamanga", "Public Management"], alumni: "Fenosoa Andriantsiferana", year: "2023", icon: "handshake" },
+        { title: "EcoMada Recyclage", description: "Waste collection and recycling network in urban areas. Partnership with 15 municipalities to reduce plastic waste by 30%.", tags: ["Atsinanana", "Business"], alumni: "Toky Randriamahefasoa", year: "2021", icon: "recycle" },
+        { title: "Drano Madio", description: "Access to clean water initiative for rural communities. 8 water points installed, benefiting over 3,000 people in remote areas.", tags: ["Sofia", "Civic Leadership"], alumni: "Miantsa Andriamalala", year: "2022", icon: "water" },
+        { title: "SolarVillage", description: "Solar energy deployment program for off-grid communities. 45 households connected to renewable energy in the Melaky region.", tags: ["Melaky", "Business"], alumni: "Harizo Rafanomezantsoa", year: "2023", icon: "lightbulb" },
+      ],
+      testimonials: [
+        { quote: "The RLC program transformed my vision of leadership. Today, my initiative reaches hundreds of young people who, like me, want to make a difference.", name: "Andrianantenaina Rakoto", cohort: "Cohort 1 - 2019", region: "Analamanga", avatar: "https://i.pravatar.cc/80?img=1" },
+        { quote: "Thanks to the skills acquired at RLC, I was able to build a network and launch a project that truly meets the needs of my community.", name: "Lalaina Razafimahefa", cohort: "Cohort 2 - 2020", region: "Diana", avatar: "https://i.pravatar.cc/80?img=5" },
+        { quote: "RLC gave me the tools and confidence to act. My civic engagement project is now a model replicated in 3 other regions.", name: "Miantsa Andriamalala", cohort: "Cohort 4 - 2022", region: "Sofia", avatar: "https://i.pravatar.cc/80?img=14" },
+      ],
     },
     footer: {
       address: "Antananarivo, Madagascar",
@@ -261,6 +278,25 @@ export const translations = {
     partners: {
       title: "Notre Partenaire",
       items: ["UNISA", "The Nomads Foundation", "Mastercard Foundation"],
+    },
+    alumniPage: {
+      title: "Initiatives des Alumni",
+      subtitle: "Découvrez les projets et engagements des alumni du RLC Madagascar Chapter",
+      initiativesTitle: "Nos Initiatives",
+      testimonialsTitle: "Leurs Témoignages",
+      initiatives: [
+        { title: "AgroMada Academy", description: "Programme de formation de jeunes entrepreneurs ruraux à l'agriculture durable. Plus de 200 jeunes formés aux techniques agricoles modernes dans 3 régions.", tags: ["Analamanga", "Business"], alumni: "Andrianantenaina Rakoto", year: "2022", icon: "seedling" },
+        { title: "CivicLab Madagascar", description: "Plateforme d'éducation civique auprès des lycéens. Des ateliers interactifs sur la participation démocratique dans 12 établissements scolaires.", tags: ["Diana", "Leadership Civique"], alumni: "Lalaina Razafimahefa", year: "2023", icon: "graduation" },
+        { title: "GovConnect", description: "Passerelle numérique entre citoyens et administrations locales. L'application a traité plus de 1 500 demandes lors de sa première année d'activité.", tags: ["Analamanga", "Management Public"], alumni: "Fenosoa Andriantsiferana", year: "2023", icon: "handshake" },
+        { title: "EcoMada Recyclage", description: "Réseau de collecte et recyclage des déchets en milieu urbain. Partenariat avec 15 communes pour réduire les déchets plastiques de 30%.", tags: ["Atsinanana", "Business"], alumni: "Toky Randriamahefasoa", year: "2021", icon: "recycle" },
+        { title: "Drano Madio", description: "Initiative d'accès à l'eau potable pour les communautés rurales. 8 points d'eau installés, bénéficiant à plus de 3 000 personnes dans des zones reculées.", tags: ["Sofia", "Leadership Civique"], alumni: "Miantsa Andriamalala", year: "2022", icon: "water" },
+        { title: "SolarVillage", description: "Programme de déploiement d'énergie solaire pour les communautés hors réseau. 45 foyers connectés à l'énergie renouvelable dans la région Melaky.", tags: ["Melaky", "Business"], alumni: "Harizo Rafanomezantsoa", year: "2023", icon: "lightbulb" },
+      ],
+      testimonials: [
+        { quote: "Le programme RLC a transformé ma vision du leadership. Aujourd'hui, mon initiative touche des centaines de jeunes qui, comme moi, veulent faire la différence.", name: "Andrianantenaina Rakoto", cohort: "Cohort 1 - 2019", region: "Analamanga", avatar: "https://i.pravatar.cc/80?img=1" },
+        { quote: "Grâce aux compétences acquises au RLC, j'ai pu construire un réseau et lancer un projet qui répond vraiment aux besoins de ma communauté.", name: "Lalaina Razafimahefa", cohort: "Cohort 2 - 2020", region: "Diana", avatar: "https://i.pravatar.cc/80?img=5" },
+        { quote: "Le RLC m'a donné les outils et la confiance pour agir. Mon projet d'engagement civique est aujourd'hui un modèle répliqué dans 3 autres régions.", name: "Miantsa Andriamalala", cohort: "Cohort 4 - 2022", region: "Sofia", avatar: "https://i.pravatar.cc/80?img=14" },
+      ],
     },
     footer: {
       address: "Antananarivo, Madagascar",

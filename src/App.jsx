@@ -11,6 +11,8 @@ import Footer from "./components/Footer";
 import AboutPage from "./pages/AboutPage";
 import ApplyPage from "./pages/ApplyPage";
 import DirectoryPage from "./pages/DirectoryPage";
+import AlumniPage from "./pages/AlumniPage";
+import InitiativePage from "./pages/InitiativePage";
 import AccessibilityWidget from "./components/AccessibilityWidget";
 
 function Home() {
@@ -39,6 +41,8 @@ export default function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/apply" element={<ApplyPage />} />
           <Route path="/directory" element={<DirectoryPage />} />
+          <Route path="/alumni" element={<AlumniPage />} />
+          <Route path="/alumni/:index" element={<InitiativePage />} />
         </Routes>
         <AccessibilityWidget />
       </BrowserRouter>

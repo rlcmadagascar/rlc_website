@@ -15,8 +15,10 @@ const DEFAULTS = {
 function applySettings(settings) {
   const root = document.documentElement;
 
-  // Font size
-  root.style.setProperty("--a11y-font-scale", `${1 + settings.fontSize * 0.1}`);
+  // Font size — change html base so all rem units scale
+  root.style.fontSize = settings.fontSize === 0
+    ? ""
+    : `${16 * (1 + settings.fontSize * 0.1)}px`;
 
   // Contrast
   root.setAttribute("data-contrast", settings.contrast);

@@ -220,9 +220,7 @@
    Global accessibility overrides
 ════════════════════════════════════ */
 
-/* Font scaling */
-:root { --a11y-font-scale: 1; }
-body { font-size: calc(1rem * var(--a11y-font-scale)); }
+/* Font scaling applied via html.style.fontSize in JS */
 
 /* High contrast */
 [data-contrast="high"] body,
