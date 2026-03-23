@@ -56,6 +56,18 @@
   color: #009dea;
 }
 
+.navbar__directory-link {
+  background: #003d6b !important;
+  color: #fff !important;
+  padding: 6px 14px !important;
+  border-radius: 6px !important;
+}
+
+.navbar__directory-link:hover {
+  background: #005a8e !important;
+  color: #fff !important;
+}
+
 .lang-switcher {
   background: #009dea;
   color: #fff;

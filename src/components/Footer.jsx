@@ -1,4 +1,5 @@
 import { useLang } from "../context/LangContext";
+import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 import "./Footer.css";
 
 export default function Footer() {
@@ -17,21 +18,8 @@ export default function Footer() {
           <div className="footer__social-group">
             <span>{t.footer.follow}</span>
             <div className="footer__icons">
-              <a href="#" aria-label="Facebook">f</a>
-              <a href="#" aria-label="Twitter">t</a>
-              <a href="#" aria-label="Instagram">in</a>
-            </div>
-          </div>
-          <div className="footer__social-group">
-            <span>{t.footer.subscribe}</span>
-            <div className="footer__icons">
-              <a href="#" aria-label="YouTube">yt</a>
-            </div>
-          </div>
-          <div className="footer__social-group">
-            <span>{t.footer.connect}</span>
-            <div className="footer__icons">
-              <a href="#" aria-label="LinkedIn">li</a>
+              <a href="#" aria-label="Facebook"><FaFacebookF /></a>
+              <a href="#" aria-label="LinkedIn"><FaLinkedinIn /></a>
             </div>
           </div>
         </div>

@@ -1,0 +1,258 @@
+import { useState, useMemo } from "react";
+import { useLang } from "../context/LangContext";
+import { FaLinkedinIn } from "react-icons/fa";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import AlumniFormModal from "../components/AlumniFormModal";
+import { alumniData } from "../data/alumni";
+import "./DirectoryPage.css";
+
+const STORAGE_KEY = "rlc_alumni_custom";
+
+function loadCustom() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveCustom(list) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+}
+
+const TRACK_META = {
+  "Business & Entrepreneuriat": {
+    bg: "#e8f6fd",
+    color: "#009dea",
+  },
+  "Leadership Civique": {
+    bg: "#e8fdf0",
+    color: "#00a86b",
+  },
+  "Management Public & Gouvernance": {
+    bg: "#fdf4e8",
+    color: "#f09000",
+  },
+};
+
+const LOCATION_FLAG = {
+  "Afrique du Sud": "🇿🇦",
+  "Sénégal": "🇸🇳",
+};
+
+const ALL_COHORTS = [...new Set(alumniData.map((a) => a.cohort))].sort();
+const ALL_TRACKS = [...new Set(alumniData.map((a) => a.track))].sort();
+const ALL_REGIONS = [...new Set(alumniData.map((a) => a.region))].sort();
+
+export default function DirectoryPage() {
+  const { t } = useLang();
+
+  const [customAlumni, setCustomAlumni] = useState(loadCustom);
+  const [showModal, setShowModal] = useState(false);
+  const [search, setSearch] = useState("");
+  const [filterLocation, setFilterLocation] = useState("");
+  const [filterTrack, setFilterTrack] = useState("");
+  const [filterRegion, setFilterRegion] = useState("");
+
+  const allAlumni = useMemo(() => [...alumniData, ...customAlumni], [customAlumni]);
+
+  function handleAddAlumni(newAlumni) {
+    const updated = [...customAlumni, newAlumni];
+    setCustomAlumni(updated);
+    saveCustom(updated);
+  }
+
+  const filtered = useMemo(() => {
+    return allAlumni.filter((a) => {
+      const matchSearch =
+        search === "" ||
+        a.name.toLowerCase().includes(search.toLowerCase());
+      const matchLocation = filterLocation === "" || a.location === filterLocation;
+      const matchTrack = filterTrack === "" || a.track === filterTrack;
+      const matchRegion = filterRegion === "" || a.region === filterRegion;
+      return matchSearch && matchLocation && matchTrack && matchRegion;
+    });
+  }, [search, filterLocation, filterTrack, filterRegion, allAlumni]);
+
+  function resetFilters() {
+    setSearch("");
+    setFilterLocation("");
+    setFilterTrack("");
+    setFilterRegion("");
+  }
+
+  const hasActiveFilter =
+    search !== "" ||
+    filterLocation !== "" ||
+    filterTrack !== "" ||
+    filterRegion !== "";
+
+  return (
+    <>
+      <Navbar />
+      <main className="dir-page">
+
+        {/* Hero */}
+        <div className="dir-page__hero">
+          <div className="dir-page__hero-overlay">
+            <h1>Annuaire des Alumni</h1>
+            <p className="dir-page__hero-sub">
+              {t.lang === "en"
+                ? "Discover the RLC Madagascar Chapter alumni community"
+                : "Découvrez la communauté des alumni du RLC Madagascar Chapter"}
+            </p>
+          </div>
+        </div>
+
+        <div className="dir-page__container">
+
+          {/* Add alumni button */}
+          <div className="dir-page__add-wrap">
+            <button className="dir-page__add-btn" onClick={() => setShowModal(true)}>
+              + Ajouter mon profil
+            </button>
+          </div>
+
+          {/* Filter bar */}
+          <div className="dir-page__filters">
+            <div className="dir-page__search-wrap">
+              <svg className="dir-page__search-icon" viewBox="0 0 20 20" fill="none">
+                <circle cx="8.5" cy="8.5" r="5.5" stroke="#009dea" strokeWidth="1.8" />
+                <path d="M13 13l3.5 3.5" stroke="#009dea" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+              <input
+                className="dir-page__search"
+                type="text"
+                placeholder="Rechercher par nom…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+
+            <select
+              className="dir-page__select"
+              value={filterLocation}
+              onChange={(e) => setFilterLocation(e.target.value)}
+            >
+              <option value="">Centre Régional de Leadership</option>
+              <option value="Sénégal">🇸🇳 Sénégal</option>
+              <option value="Afrique du Sud">🇿🇦 Afrique du Sud</option>
+            </select>
+
+            <select
+              className="dir-page__select"
+              value={filterTrack}
+              onChange={(e) => setFilterTrack(e.target.value)}
+            >
+              <option value="">Tous les parcours</option>
+              {ALL_TRACKS.map((tr) => (
+                <option key={tr} value={tr}>{tr}</option>
+              ))}
+            </select>
+
+            <select
+              className="dir-page__select"
+              value={filterRegion}
+              onChange={(e) => setFilterRegion(e.target.value)}
+            >
+              <option value="">Toutes les régions</option>
+              {ALL_REGIONS.map((r) => (
+                <option key={r} value={r}>{r}</option>
+              ))}
+            </select>
+
+            {hasActiveFilter && (
+              <button className="dir-page__reset" onClick={resetFilters}>
+                Réinitialiser les filtres
+              </button>
+            )}
+          </div>
+
+          {/* Result count */}
+          <p className="dir-page__count">
+            {filtered.length} alumni{filtered.length !== 1 ? "" : ""} trouvé{filtered.length > 1 ? "s" : ""}
+          </p>
+
+          {/* Grid */}
+          {filtered.length > 0 ? (
+            <div className="dir-page__grid">
+              {filtered.map((alumni) => {
+                const trackStyle = TRACK_META[alumni.track] || {};
+                const flag = LOCATION_FLAG[alumni.location] || "";
+                return (
+                  <div className="dir-card" key={alumni.id}>
+                    <div className="dir-card__top">
+                      <img
+                        className="dir-card__avatar"
+                        src={alumni.avatar}
+                        alt={alumni.name}
+                        loading="lazy"
+                      />
+                      <div className="dir-card__info">
+                        <h3 className="dir-card__name">{alumni.name}</h3>
+                        <span className="dir-card__cohort">{alumni.cohort}</span>
+                      </div>
+                    </div>
+
+                    <span
+                      className="dir-card__track-badge"
+                      style={{ background: trackStyle.bg, color: trackStyle.color }}
+                    >
+                      {alumni.track}
+                    </span>
+
+                    <div className="dir-card__details">
+                      <div className="dir-card__detail-row">
+                        <svg viewBox="0 0 16 16" fill="none" className="dir-card__icon">
+                          <path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5S12.5 9.5 12.5 6c0-2.5-2-4.5-4.5-4.5z" stroke="currentColor" strokeWidth="1.4" />
+                          <circle cx="8" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.4" />
+                        </svg>
+                        <span>{alumni.region}</span>
+                      </div>
+                      <div className="dir-card__detail-row">
+                        <span className="dir-card__flag">{flag}</span>
+                        <span>{alumni.location}</span>
+                      </div>
+                    </div>
+
+                    <div className="dir-card__divider" />
+
+                    <div className="dir-card__footer">
+                      <div className="dir-card__position">
+                        <strong>{alumni.position}</strong>
+                        <span>{alumni.organization}</span>
+                      </div>
+                      {alumni.linkedin && (
+                        <a
+                          href={alumni.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="dir-card__linkedin"
+                          aria-label="LinkedIn"
+                        >
+                          <FaLinkedinIn />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="dir-page__empty">
+              <p>Aucun alumni ne correspond à votre recherche.</p>
+              <button className="dir-page__reset" onClick={resetFilters}>
+                Réinitialiser les filtres
+              </button>
+            </div>
+          )}
+        </div>
+      </main>
+      {showModal && (
+        <AlumniFormModal
+          onClose={() => setShowModal(false)}
+          onSubmit={(a) => { handleAddAlumni(a); }}
+        />
+      )}
+      <Footer />
+    </>
+  );
+}
