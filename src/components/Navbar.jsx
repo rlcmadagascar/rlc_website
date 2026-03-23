@@ -41,7 +41,7 @@ export default function Navbar() {
           <Link to="/about" onClick={() => setMenuOpen(false)}>{t.nav.about}</Link>
           <Link to="/apply" onClick={() => setMenuOpen(false)}>{t.nav.apply}</Link>
           <Link to="/alumni" onClick={() => setMenuOpen(false)}>{t.nav.alumni}</Link>
-          <a href="#team" onClick={(e) => { e.preventDefault(); handleHashLink("#team"); }}>{t.nav.team}</a>
+          <Link to="/team" onClick={() => setMenuOpen(false)}>{t.nav.team}</Link>
           <a href="#gallery" onClick={(e) => { e.preventDefault(); handleHashLink("#gallery"); }}>{t.nav.gallery}</a>
           <Link to="/directory" onClick={() => setMenuOpen(false)} className="navbar__directory-link">{t.nav.media}</Link>
 

@@ -1,0 +1,389 @@
+/* ── HERO ───────────────────────────────────────────────────── */
+.team-page__hero {
+  position: relative;
+  background: linear-gradient(135deg, #003d6b 0%, #009dea 100%);
+  color: #fff;
+  text-align: center;
+  padding: 120px 20px 0;
+  overflow: hidden;
+}
+
+.team-page__hero-inner {
+  position: relative;
+  z-index: 1;
+  padding-bottom: 60px;
+}
+
+.team-page__hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0 0 20px;
+  line-height: 1.2;
+}
+
+.team-page__hero-subtitle {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 10px 28px;
+  border-radius: 999px;
+  margin: 0;
+  max-width: 640px;
+}
+
+.team-page__hero-wave {
+  position: relative;
+  z-index: 1;
+}
+
+.team-page__hero-wave svg {
+  display: block;
+  width: 100%;
+  height: 60px;
+}
+
+/* ── SHARED SECTION LAYOUT ──────────────────────────────────── */
+.team-page__section {
+  padding: 80px 20px;
+}
+
+.team-page__section--white {
+  background: #fff;
+}
+
+.team-page__section--light {
+  background: #f7fbff;
+}
+
+.team-page__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.team-page__section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #003d6b;
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.team-page__divider {
+  width: 60px;
+  height: 4px;
+  background: #009dea;
+  border-radius: 2px;
+  margin: 0 auto 48px;
+}
+
+/* ── BUREAU ROW ─────────────────────────────────────────────── */
+.team-page__bureau-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px;
+}
+
+.team-page__bureau-card {
+  background: #fff;
+  border-top: 4px solid #009dea;
+  border-radius: 12px;
+  padding: 32px 24px;
+  box-shadow: 0 4px 24px rgba(0, 61, 107, 0.1);
+  text-align: center;
+  max-width: 200px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.team-page__bureau-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 36px rgba(0, 61, 107, 0.15);
+}
+
+.team-page__bureau-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #009dea;
+  flex-shrink: 0;
+}
+
+.team-page__bureau-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #003d6b;
+  margin: 0;
+}
+
+.team-page__bureau-role {
+  display: inline-block;
+  background: #e8f4fd;
+  color: #009dea;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.team-page__bureau-bio {
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── COORDINATORS GRID ──────────────────────────────────────── */
+.team-page__coordinators-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.team-page__coordinator-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 36px 24px 28px;
+  box-shadow: 0 2px 16px rgba(0, 61, 107, 0.07);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.team-page__coordinator-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(0, 61, 107, 0.12);
+}
+
+.team-page__coordinator-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #009dea;
+  flex-shrink: 0;
+}
+
+.team-page__coordinator-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #003d6b;
+  margin: 0;
+}
+
+.team-page__coordinator-portfolio {
+  display: inline-block;
+  background: #e8f4fd;
+  color: #003d6b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 5px 14px;
+  border-radius: 999px;
+}
+
+/* ── FOCAL POINTS GRID ──────────────────────────────────────── */
+.team-page__focal-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.team-page__focal-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 12px rgba(0, 61, 107, 0.07);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.team-page__focal-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 61, 107, 0.11);
+}
+
+.team-page__focal-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #009dea;
+  flex-shrink: 0;
+}
+
+.team-page__focal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.team-page__focal-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #003d6b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.team-page__focal-region {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+/* ── PAST COORDINATORS GRID ─────────────────────────────────── */
+.team-page__past-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.team-page__past-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 12px rgba(0, 61, 107, 0.07);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.team-page__past-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 61, 107, 0.11);
+}
+
+.team-page__past-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #b0c4d8;
+  flex-shrink: 0;
+  filter: grayscale(30%);
+}
+
+.team-page__past-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.team-page__past-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #003d6b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.team-page__past-period {
+  font-size: 0.75rem;
+  color: #999;
+  font-style: italic;
+}
+
+/* ── LINKEDIN BUTTON ────────────────────────────────────────── */
+.team-page__linkedin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: #0077b5;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.team-page__linkedin-btn:hover {
+  background: #005f8f;
+  transform: scale(1.1);
+}
+
+.team-page__linkedin-btn--small {
+  width: 28px;
+  height: 28px;
+  font-size: 0.75rem;
+  border-radius: 5px;
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .team-page__focal-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .team-page__coordinators-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .team-page__hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .team-page__bureau-row {
+    gap: 20px;
+  }
+
+  .team-page__focal-grid,
+  .team-page__past-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 640px) {
+  .team-page__hero h1 {
+    font-size: 1.9rem;
+  }
+
+  .team-page__hero-subtitle {
+    font-size: 0.9rem;
+    padding: 8px 18px;
+  }
+
+  .team-page__section-title {
+    font-size: 1.6rem;
+  }
+
+  .team-page__coordinators-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-page__focal-grid,
+  .team-page__past-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-page__bureau-card {
+    max-width: 100%;
+  }
+}

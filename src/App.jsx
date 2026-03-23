@@ -13,6 +13,7 @@ import ApplyPage from "./pages/ApplyPage";
 import DirectoryPage from "./pages/DirectoryPage";
 import AlumniPage from "./pages/AlumniPage";
 import InitiativePage from "./pages/InitiativePage";
+import TeamPage from "./pages/TeamPage";
 import AccessibilityWidget from "./components/AccessibilityWidget";
 
 function Home() {
@@ -43,6 +44,7 @@ export default function App() {
           <Route path="/directory" element={<DirectoryPage />} />
           <Route path="/alumni" element={<AlumniPage />} />
           <Route path="/alumni/:index" element={<InitiativePage />} />
+          <Route path="/team" element={<TeamPage />} />
         </Routes>
         <AccessibilityWidget />
       </BrowserRouter>
