@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import AboutPage from "./pages/AboutPage";
 import ApplyPage from "./pages/ApplyPage";
 import DirectoryPage from "./pages/DirectoryPage";
+import AccessibilityWidget from "./components/AccessibilityWidget";
 
 function Home() {
   return (
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/apply" element={<ApplyPage />} />
           <Route path="/directory" element={<DirectoryPage />} />
         </Routes>
+        <AccessibilityWidget />
       </BrowserRouter>
     </LangProvider>
   );
