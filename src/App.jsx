@@ -14,6 +14,7 @@ import DirectoryPage from "./pages/DirectoryPage";
 import AlumniPage from "./pages/AlumniPage";
 import InitiativePage from "./pages/InitiativePage";
 import TeamPage from "./pages/TeamPage";
+import InitiativesNewsPage from "./pages/InitiativesNewsPage";
 import AccessibilityWidget from "./components/AccessibilityWidget";
 
 function Home() {
@@ -44,6 +45,9 @@ export default function App() {
           <Route path="/directory" element={<DirectoryPage />} />
           <Route path="/alumni" element={<AlumniPage />} />
           <Route path="/alumni/:index" element={<InitiativePage />} />
+          <Route path="/initiatives/spotlight" element={<InitiativesNewsPage category="spotlight" />} />
+          <Route path="/initiatives/fireside" element={<InitiativesNewsPage category="fireside" />} />
+          <Route path="/initiatives/autres" element={<InitiativesNewsPage category="autres" />} />
           <Route path="/team" element={<TeamPage />} />
         </Routes>
         <AccessibilityWidget />
