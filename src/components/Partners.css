@@ -1,0 +1,32 @@
+.partners {
+  padding: 60px 20px;
+  background: #fff;
+}
+
+.partners__grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.partners__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.partners__logo img {
+  height: 180px;
+  width: 320px;
+  object-fit: cover;
+  object-position: center;
+  filter: grayscale(20%);
+  transition: filter 0.2s;
+}
+
+.partners__logo img:hover {
+  filter: grayscale(0%);
+}
