@@ -7,6 +7,8 @@ import { supabase } from "../lib/supabase";
 import { isSafeAvatarUrl } from "../lib/sanitize";
 import "./DirectoryPage.css";
 
+const ITEMS_PER_PAGE = 12;
+
 const TRACK_META = {
   "Business & Entrepreneuriat":        { bg: "#e8f6fd", color: "#009dea" },
   "Leadership Civique":                { bg: "#e8fdf0", color: "#00a86b" },
@@ -30,6 +32,7 @@ export default function DirectoryPage() {
   const [filterLocation, setFilterLocation] = useState("");
   const [filterTrack, setFilterTrack] = useState("");
   const [filterRegion, setFilterRegion] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     async function fetchAlumni() {
@@ -47,6 +50,7 @@ if (!error) setAlumni(data);
   const allRegions = useMemo(() => [...new Set(alumni.map((a) => a.region))].sort(), [alumni]);
 
   const filtered = useMemo(() => {
+    setCurrentPage(1);
     return alumni.filter((a) => {
       const matchSearch =
         search === "" ||
@@ -57,6 +61,12 @@ if (!error) setAlumni(data);
       return matchSearch && matchLocation && matchTrack && matchRegion;
     });
   }, [search, filterLocation, filterTrack, filterRegion, alumni]);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = filtered.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   function resetFilters() {
     setSearch("");
@@ -159,7 +169,7 @@ if (!error) setAlumni(data);
             <div className="dir-page__empty"><p>Chargement…</p></div>
           ) : filtered.length > 0 ? (
             <div className="dir-page__grid">
-              {filtered.map((alumni) => {
+              {paginated.map((alumni) => {
                 const trackStyle = TRACK_META[alumni.track] || {};
                 const flag = LOCATION_FLAG[alumni.location] || "";
                 return (
@@ -224,6 +234,52 @@ if (!error) setAlumni(data);
               <p>Aucun alumni ne correspond à votre recherche.</p>
               <button className="dir-page__reset" onClick={resetFilters}>
                 Réinitialiser les filtres
+              </button>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {!loading && totalPages > 1 && (
+            <div className="dir-page__pagination">
+              <button
+                className="dir-page__page-btn"
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                aria-label={lang === "en" ? "Previous page" : "Page précédente"}
+              >
+                ‹
+              </button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1)
+                .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
+                .reduce((acc, p, idx, arr) => {
+                  if (idx > 0 && p - arr[idx - 1] > 1) acc.push("…");
+                  acc.push(p);
+                  return acc;
+                }, [])
+                .map((item, idx) =>
+                  item === "…" ? (
+                    <span key={`ellipsis-${idx}`} className="dir-page__page-ellipsis">…</span>
+                  ) : (
+                    <button
+                      key={item}
+                      className={`dir-page__page-btn${currentPage === item ? " dir-page__page-btn--active" : ""}`}
+                      onClick={() => setCurrentPage(item)}
+                      aria-label={`Page ${item}`}
+                      aria-current={currentPage === item ? "page" : undefined}
+                    >
+                      {item}
+                    </button>
+                  )
+                )}
+
+              <button
+                className="dir-page__page-btn"
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                aria-label={lang === "en" ? "Next page" : "Page suivante"}
+              >
+                ›
               </button>
             </div>
           )}
