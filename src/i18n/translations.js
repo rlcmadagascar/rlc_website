@@ -11,7 +11,7 @@ export const translations = {
       media: "Directory",
     },
     hero: {
-      title: "Your participation plays a significant role in the legacy of RLC Madagascar Chapter.",
+      title: "Empowering Young Malagasy Leaders",
       donate: "Donate",
       apply: "Apply to the program",
     },
