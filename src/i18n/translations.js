@@ -131,6 +131,8 @@ export const translations = {
       subtitle: "Discover the projects and commitments of RLC Madagascar Chapter alumni",
       initiativesTitle: "Our Initiatives",
       testimonialsTitle: "Their Words",
+      loading: "Loading…",
+      noInitiatives: "No initiatives submitted yet.",
       initiatives: [
         { title: "AgroMada Academy", description: "Training program for young rural entrepreneurs in sustainable agriculture. Over 200 young people trained in modern farming techniques across 3 regions.", tags: ["Analamanga", "Business"], alumni: "Andrianantenaina Rakoto", year: "2022", icon: "seedling" },
         { title: "CivicLab Madagascar", description: "Civic education platform reaching secondary school students. Interactive workshops on democratic participation held in 12 schools.", tags: ["Diana", "Civic Leadership"], alumni: "Lalaina Razafimahefa", year: "2023", icon: "graduation" },
@@ -427,6 +429,8 @@ export const translations = {
       subtitle: "Découvrez les projets et engagements des alumni du RLC Madagascar Chapter",
       initiativesTitle: "Nos Initiatives",
       testimonialsTitle: "Leurs Témoignages",
+      loading: "Chargement…",
+      noInitiatives: "Aucune initiative soumise pour le moment.",
       initiatives: [
         { title: "AgroMada Academy", description: "Programme de formation de jeunes entrepreneurs ruraux à l'agriculture durable. Plus de 200 jeunes formés aux techniques agricoles modernes dans 3 régions.", tags: ["Analamanga", "Business"], alumni: "Andrianantenaina Rakoto", year: "2022", icon: "seedling" },
         { title: "CivicLab Madagascar", description: "Plateforme d'éducation civique auprès des lycéens. Des ateliers interactifs sur la participation démocratique dans 12 établissements scolaires.", tags: ["Diana", "Leadership Civique"], alumni: "Lalaina Razafimahefa", year: "2023", icon: "graduation" },

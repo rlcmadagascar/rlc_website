@@ -58,9 +58,9 @@ export default function AlumniPage() {
             <div className="alumni-page__divider" />
 
             {loading ? (
-              <p className="alumni-page__empty">Chargement…</p>
+              <p className="alumni-page__empty">{p.loading}</p>
             ) : initiatives.length === 0 ? (
-              <p className="alumni-page__empty">Aucune initiative soumise pour le moment.</p>
+              <p className="alumni-page__empty">{p.noInitiatives}</p>
             ) : (
               <div className="alumni-page__initiatives-grid">
                 {initiatives.map((item, i) => {

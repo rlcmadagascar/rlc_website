@@ -107,7 +107,7 @@
 .navbar__menu {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 30px;
   flex-wrap: nowrap;
 }
 
