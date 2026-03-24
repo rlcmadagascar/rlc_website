@@ -21,7 +21,7 @@ const LOCATION_FLAG = {
 };
 
 export default function DirectoryPage() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
 
   const [alumni, setAlumni] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -78,9 +78,9 @@ if (!error) setAlumni(data);
         {/* Hero */}
         <div className="dir-page__hero">
           <div className="dir-page__hero-overlay">
-            <h1>Annuaire des Alumni</h1>
+            <h1>{lang === "en" ? "Alumni Directory" : "Annuaire des Alumni"}</h1>
             <p className="dir-page__hero-sub">
-              {t.lang === "en"
+              {lang === "en"
                 ? "Discover the RLC Madagascar Chapter alumni community"
                 : "Découvrez la communauté des alumni du RLC Madagascar Chapter"}
             </p>
@@ -99,7 +99,7 @@ if (!error) setAlumni(data);
               <input
                 className="dir-page__search"
                 type="text"
-                placeholder="Rechercher par nom…"
+                placeholder={lang === "en" ? "Search by name…" : "Rechercher par nom…"}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -110,9 +110,9 @@ if (!error) setAlumni(data);
               value={filterLocation}
               onChange={(e) => setFilterLocation(e.target.value)}
             >
-              <option value="">Centre Régional de Leadership</option>
-              <option value="Sénégal">🇸🇳 Sénégal</option>
-              <option value="Afrique du Sud">🇿🇦 Afrique du Sud</option>
+              <option value="">{lang === "en" ? "Regional Leadership Center" : "Centre Régional de Leadership"}</option>
+              <option value="Sénégal">🇸🇳 {lang === "en" ? "Senegal" : "Sénégal"}</option>
+              <option value="Afrique du Sud">🇿🇦 {lang === "en" ? "South Africa" : "Afrique du Sud"}</option>
             </select>
 
             <select
@@ -120,7 +120,7 @@ if (!error) setAlumni(data);
               value={filterTrack}
               onChange={(e) => setFilterTrack(e.target.value)}
             >
-              <option value="">Tous les parcours</option>
+              <option value="">{lang === "en" ? "All tracks" : "Tous les parcours"}</option>
               {allTracks.map((tr) => (
                 <option key={tr} value={tr}>{tr}</option>
               ))}
@@ -131,7 +131,7 @@ if (!error) setAlumni(data);
               value={filterRegion}
               onChange={(e) => setFilterRegion(e.target.value)}
             >
-              <option value="">Toutes les régions</option>
+              <option value="">{lang === "en" ? "All regions" : "Toutes les régions"}</option>
               {allRegions.map((r) => (
                 <option key={r} value={r}>{r}</option>
               ))}
@@ -139,7 +139,7 @@ if (!error) setAlumni(data);
 
             {hasActiveFilter && (
               <button className="dir-page__reset" onClick={resetFilters}>
-                Réinitialiser les filtres
+                {lang === "en" ? "Reset filters" : "Réinitialiser les filtres"}
               </button>
             )}
           </div>
@@ -147,7 +147,9 @@ if (!error) setAlumni(data);
           {/* Result count */}
           {!loading && (
             <p className="dir-page__count">
-              {filtered.length} alumni trouvé{filtered.length > 1 ? "s" : ""}
+              {lang === "en"
+                ? `${filtered.length} alumni found`
+                : `${filtered.length} alumni trouvé${filtered.length > 1 ? "s" : ""}`}
             </p>
           )}
 
