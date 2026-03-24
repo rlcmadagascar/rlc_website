@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
+import { isSafeAvatarUrl } from "../lib/sanitize";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SEOHead from "../components/SEOHead";
@@ -75,6 +76,11 @@ export default function ProfilePage() {
   const [testimonials, setTestimonials] = useState([]);
   const [testimonialSaving, setTestimonialSaving] = useState(false);
   const [testimonialMsg, setTestimonialMsg] = useState("");
+
+  // Mot de passe
+  const [pwForm, setPwForm] = useState({ newPwd: "", confirm: "" });
+  const [pwSaving, setPwSaving] = useState(false);
+  const [pwMsg, setPwMsg] = useState("");
 
   useEffect(() => {
     if (!user) { navigate("/auth"); return; }
@@ -201,6 +207,29 @@ export default function ProfilePage() {
     finally { setInitiativeSaving(false); }
   }
 
+  // --- Mot de passe ---
+  async function changePassword(e) {
+    e.preventDefault();
+    setPwMsg("");
+    if (pwForm.newPwd !== pwForm.confirm) {
+      setPwMsg("Les mots de passe ne correspondent pas.");
+      return;
+    }
+    if (pwForm.newPwd.length < 8) {
+      setPwMsg("Le mot de passe doit contenir au moins 8 caractères.");
+      return;
+    }
+    setPwSaving(true);
+    const { error } = await supabase.auth.updateUser({ password: pwForm.newPwd });
+    if (error) {
+      setPwMsg("Erreur lors du changement de mot de passe.");
+    } else {
+      setPwMsg("Mot de passe modifié avec succès !");
+      setPwForm({ newPwd: "", confirm: "" });
+    }
+    setPwSaving(false);
+  }
+
   // --- Témoignages ---
   async function saveTestimonial(e) {
     e.preventDefault();
@@ -244,7 +273,7 @@ export default function ProfilePage() {
         <div className="profile-page__hero">
           <div className="profile-page__hero-inner">
             <div className="profile-page__avatar-wrap">
-              {photoPreview
+              {isSafeAvatarUrl(photoPreview)
                 ? <img src={photoPreview} alt="avatar" className="profile-page__avatar" />
                 : <div className="profile-page__avatar-placeholder">👤</div>}
             </div>
@@ -273,12 +302,13 @@ export default function ProfilePage() {
 
           {/* ── TAB 1 : MON PROFIL ── */}
           {activeTab === "profil" && (
+            <>
             <form className="profile-page__form" onSubmit={saveProfile}>
               <h2 className="profile-page__section-title">Mon profil</h2>
 
               <div className="profile-page__photo-row">
                 <div className="profile-page__photo-preview">
-                  {photoPreview ? <img src={photoPreview} alt="Photo" /> : <span>👤</span>}
+                  {isSafeAvatarUrl(photoPreview) ? <img src={photoPreview} alt="Photo" /> : <span>👤</span>}
                 </div>
                 <label className="profile-page__photo-btn">
                   {photoPreview ? "Changer la photo" : "Ajouter une photo"}
@@ -305,6 +335,37 @@ export default function ProfilePage() {
                 {profileSaving ? "Enregistrement…" : "Enregistrer"}
               </button>
             </form>
+
+            <hr className="profile-page__section-divider" />
+
+            <form className="profile-page__form" onSubmit={changePassword}>
+              <h2 className="profile-page__section-title">Changer de mot de passe</h2>
+              <div className="profile-page__field">
+                <label>Nouveau mot de passe</label>
+                <input
+                  type="password"
+                  value={pwForm.newPwd}
+                  onChange={(e) => setPwForm((f) => ({ ...f, newPwd: e.target.value }))}
+                  placeholder="Minimum 8 caractères"
+                  required
+                />
+              </div>
+              <div className="profile-page__field">
+                <label>Confirmer le mot de passe</label>
+                <input
+                  type="password"
+                  value={pwForm.confirm}
+                  onChange={(e) => setPwForm((f) => ({ ...f, confirm: e.target.value }))}
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+              {pwMsg && <p className={pwMsg.includes("!") ? "profile-page__success" : "profile-page__error"}>{pwMsg}</p>}
+              <button type="submit" className="profile-page__btn" disabled={pwSaving}>
+                {pwSaving ? "Mise à jour…" : "Modifier le mot de passe"}
+              </button>
+            </form>
+            </>
           )}
 
           {/* ── TAB 2 : ANNUAIRE ── */}

@@ -4,6 +4,7 @@ import { FaLinkedinIn } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { supabase } from "../lib/supabase";
+import { isSafeAvatarUrl } from "../lib/sanitize";
 import "./DirectoryPage.css";
 
 const TRACK_META = {
@@ -164,12 +165,10 @@ if (!error) setAlumni(data);
                 return (
                   <div className="dir-card" key={alumni.id}>
                     <div className="dir-card__top">
-                      <img
-                        className="dir-card__avatar"
-                        src={alumni.avatar}
-                        alt={alumni.name}
-                        loading="lazy"
-                      />
+                      {isSafeAvatarUrl(alumni.avatar)
+                        ? <img className="dir-card__avatar" src={alumni.avatar} alt={alumni.name} loading="lazy" />
+                        : <div className="dir-card__avatar dir-card__avatar--placeholder">👤</div>
+                      }
                       <div className="dir-card__info">
                         <h3 className="dir-card__name">{alumni.name}</h3>
                         <span className="dir-card__cohort">{alumni.cohort}</span>

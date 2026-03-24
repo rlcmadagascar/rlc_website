@@ -264,6 +264,13 @@
   margin-bottom: 8px;
 }
 
+/* SECTION DIVIDER */
+.profile-page__section-divider {
+  border: none;
+  border-top: 2px solid #eef2f7;
+  margin: 40px 0;
+}
+
 /* INITIATIVES LIST */
 .profile-page__initiative-list {
   margin-top: 40px;

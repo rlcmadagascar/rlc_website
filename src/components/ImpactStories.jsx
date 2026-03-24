@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLang } from "../context/LangContext";
 import { supabase } from "../lib/supabase";
+import { isSafeAvatarUrl } from "../lib/sanitize";
 import "./ImpactStories.css";
 
 export default function ImpactStories() {
@@ -36,7 +37,7 @@ export default function ImpactStories() {
               <div className="stories__quote-mark">&ldquo;</div>
               <p className="stories__quote-text">{testimonials[current].quote}</p>
               <div className="stories__author">
-                {testimonials[current].avatar
+                {isSafeAvatarUrl(testimonials[current].avatar)
                   ? <img src={testimonials[current].avatar} alt={testimonials[current].name} className="stories__avatar" />
                   : <div className="stories__avatar stories__avatar--placeholder">👤</div>
                 }

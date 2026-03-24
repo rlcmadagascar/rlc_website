@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SEOHead from "../components/SEOHead";
 import { supabase } from "../lib/supabase";
+import { isSafeAvatarUrl } from "../lib/sanitize";
 import "./AlumniPage.css";
 
 const SECTOR_COLORS = [
@@ -132,7 +133,7 @@ export default function AlumniPage() {
                       <div className="alumni-page__testimonial-quote-mark">&ldquo;</div>
                       <p className="alumni-page__testimonial-text">{item.quote}</p>
                       <div className="alumni-page__testimonial-author">
-                        {item.avatar
+                        {isSafeAvatarUrl(item.avatar)
                           ? <img src={item.avatar} alt={item.name} className="alumni-page__testimonial-avatar" />
                           : <div className="alumni-page__testimonial-avatar alumni-page__testimonial-avatar--placeholder">👤</div>
                         }
