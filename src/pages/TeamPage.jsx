@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLang } from "../context/LangContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import SEOHead from "../components/SEOHead";
 import { FaLinkedinIn } from "react-icons/fa";
 import { supabase } from "../lib/supabase";
 import "./TeamPage.css";
@@ -59,6 +60,11 @@ export default function TeamPage() {
 
   return (
     <>
+      <SEOHead
+        title="Notre Équipe"
+        description="Rencontrez l'équipe du RLC Madagascar Chapter — bureau, coordinateurs, points focaux et anciens coordinateurs qui animent le réseau des alumni YALI à Madagascar."
+        url="/team"
+      />
       <Navbar />
       <main className="team-page">
 

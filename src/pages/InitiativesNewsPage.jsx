@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useLang } from "../context/LangContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import SEOHead from "../components/SEOHead";
 import { FaCalendarAlt, FaUser, FaArrowLeft } from "react-icons/fa";
 import "./InitiativesNewsPage.css";
 
@@ -10,8 +11,29 @@ export default function InitiativesNewsPage({ category }) {
   const p = t.initiativesPage;
   const section = p[category];
 
+  const categoryMeta = {
+    spotlight: {
+      title: "Spotlight",
+      description: "Découvrez les histoires à la une des alumni RLC Madagascar — leurs projets, réussites et impact sur leurs communautés.",
+    },
+    fireside: {
+      title: "Fireside Chats",
+      description: "Les Fireside Chats du RLC Madagascar — des conversations inspirantes avec des alumni leaders qui partagent leur parcours et vision.",
+    },
+    autres: {
+      title: "Kodata — Autres Initiatives",
+      description: "Kodata : les autres initiatives et actualités du RLC Madagascar Chapter — événements, projets communautaires et actions collectives.",
+    },
+  };
+  const meta = categoryMeta[category] || { title: "Initiatives", description: "Les initiatives du RLC Madagascar Chapter." };
+
   return (
     <>
+      <SEOHead
+        title={meta.title}
+        description={meta.description}
+        url={`/initiatives/${category}`}
+      />
       <Navbar />
       <main className="inews-page">
 

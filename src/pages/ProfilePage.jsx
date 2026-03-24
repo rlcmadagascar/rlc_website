@@ -4,6 +4,7 @@ import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import SEOHead from "../components/SEOHead";
 import "./ProfilePage.css";
 
 const TRACKS = [
@@ -235,6 +236,7 @@ export default function ProfilePage() {
 
   return (
     <>
+      <SEOHead title="Mon Profil" noIndex={true} url="/profile" />
       <Navbar />
       <main className="profile-page">
 

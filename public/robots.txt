@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /auth
+Disallow: /profile
+
+Sitemap: https://rlc-madagascar.org/sitemap.xml

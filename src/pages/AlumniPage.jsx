@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLang } from "../context/LangContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import SEOHead from "../components/SEOHead";
 import { supabase } from "../lib/supabase";
 import "./AlumniPage.css";
 
@@ -35,6 +36,11 @@ export default function AlumniPage() {
 
   return (
     <>
+      <SEOHead
+        title="Alumni & Initiatives"
+        description="Découvrez les initiatives et témoignages des alumni RLC Madagascar — plus de 600 jeunes leaders actifs dans les 21 régions de Madagascar."
+        url="/alumni"
+      />
       <Navbar />
       <main className="alumni-page">
 

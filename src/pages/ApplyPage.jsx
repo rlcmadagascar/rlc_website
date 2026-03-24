@@ -1,6 +1,7 @@
 import { useLang } from "../context/LangContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import SEOHead from "../components/SEOHead";
 import "./ApplyPage.css";
 
 export default function ApplyPage() {
@@ -9,6 +10,11 @@ export default function ApplyPage() {
 
   return (
     <>
+      <SEOHead
+        title="Candidature"
+        description="Postulez au programme RLC Madagascar — ouvert aux jeunes de 18 à 35 ans des pays d'Afrique australe. Aucun frais requis. Développez votre leadership en entrepreneuriat, gouvernance et engagement civique."
+        url="/apply"
+      />
       <Navbar />
       <main className="apply-page">
 

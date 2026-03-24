@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LangProvider } from "./context/LangContext";
 import { AuthProvider } from "./context/AuthContext";
+import SEOHead from "./components/SEOHead";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Programs from "./components/Programs";
@@ -23,6 +24,10 @@ import AccessibilityWidget from "./components/AccessibilityWidget";
 function Home() {
   return (
     <>
+      <SEOHead
+        description="RLC Madagascar Chapter — réseau de +600 alumni YALI Regional Leadership Center présents dans les 21 régions de Madagascar. Leadership, entrepreneuriat, gouvernance et engagement civique."
+        url="/"
+      />
       <Navbar />
       <main>
         <Hero />

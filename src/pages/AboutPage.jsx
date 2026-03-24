@@ -1,6 +1,7 @@
 import { useLang } from "../context/LangContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import SEOHead from "../components/SEOHead";
 import {
   FaLaptop, FaUsers, FaHandshake, FaPeopleArrows,
   FaSeedling, FaToolbox,
@@ -15,6 +16,12 @@ export default function AboutPage() {
 
   return (
     <>
+      <SEOHead
+        title="À Propos"
+        description="Découvrez le RLC Madagascar Chapter — alumni du YALI Regional Leadership Center Southern Africa. Un réseau de jeunes leaders engagés pour le développement, l'entrepreneuriat et la gouvernance à Madagascar."
+        url="/about"
+        image="/group_photo.jpg"
+      />
       <Navbar />
       <main className="about-page">
 

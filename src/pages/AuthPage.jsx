@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import SEOHead from "../components/SEOHead";
 import "./AuthPage.css";
 
 export default function AuthPage() {
@@ -62,6 +63,7 @@ export default function AuthPage() {
 
   return (
     <>
+      <SEOHead title="Connexion" noIndex={true} url="/auth" />
       <Navbar />
       <main className="auth-page">
         <div className="auth-card">

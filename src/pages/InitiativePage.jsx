@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { useLang } from "../context/LangContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import SEOHead from "../components/SEOHead";
 import {
   FaSeedling, FaGraduationCap, FaHandshake,
   FaRecycle, FaWater, FaLightbulb,
@@ -45,6 +46,13 @@ export default function InitiativePage() {
 
   return (
     <>
+      <SEOHead
+        title={item.title}
+        description={item.excerpt || `Initiative alumni RLC Madagascar — ${item.title}. Par ${item.alumni}, ${item.year}.`}
+        url={`/alumni/${index}`}
+        image={item.image || "/group_photo.jpg"}
+        type="article"
+      />
       <Navbar />
       <main className="init-page">
 
