@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLang } from "../context/LangContext";
 import { useAuth } from "../context/AuthContext";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown, FaGlobe } from "react-icons/fa";
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -91,8 +91,9 @@ export default function Navbar() {
           <Link to="/team" onClick={closeAll}>{t.nav.team}</Link>
           <Link to="/directory" onClick={closeAll} className="navbar__directory-link">{t.nav.media}</Link>
 
-          <button className="lang-switcher" onClick={toggle}>
-            {lang === "fr" ? "EN" : "FR"}
+          <button className="lang-switcher" onClick={toggle} aria-label="Changer de langue" title={lang === "fr" ? "Switch to English" : "Passer en français"}>
+            <FaGlobe />
+            <span>{lang === "fr" ? "EN" : "FR"}</span>
           </button>
 
           {/* Auth */}

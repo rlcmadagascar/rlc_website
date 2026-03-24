@@ -7,7 +7,7 @@ export const translations = {
       alumni: "Meet the Alumni",
       team: "Meet our Team",
       initiatives: "Our Initiatives",
-      autresInitiatives: "Other Initiatives",
+      autresInitiatives: "Kodata",
       media: "Directory",
     },
     hero: {
@@ -256,7 +256,7 @@ export const translations = {
         ],
       },
       autres: {
-        title: "Other Initiatives",
+        title: "Kodata",
         subtitle: "News, events and collaborations from the RLC Madagascar Chapter",
         articles: [
           {
@@ -303,7 +303,7 @@ export const translations = {
       alumni: "Nos Alumni",
       team: "Notre Équipe",
       initiatives: "Nos Initiatives",
-      autresInitiatives: "Autres Initiatives",
+      autresInitiatives: "Kodata",
       media: "Annuaire",
     },
     hero: {
@@ -552,7 +552,7 @@ export const translations = {
         ],
       },
       autres: {
-        title: "Autres Initiatives",
+        title: "Kodata",
         subtitle: "Actualités, événements et collaborations du RLC Madagascar Chapter",
         articles: [
           {
