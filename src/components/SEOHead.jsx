@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-const SITE_NAME = "RLC Madagascar";
+const SITE_NAME = "RLC Madagascar Chapter";
 const DEFAULT_IMAGE = "/group_photo.jpg";
 const BASE_URL = "https://rlcmadagascar.org";
 
@@ -31,7 +31,7 @@ export default function SEOHead({
       <meta property="og:title" content={fullTitle} />
       {description && <meta property="og:description" content={description} />}
       <meta property="og:image" content={fullImage} />
-      <meta property="og:site_name" content={SITE_NAME} />
+      <meta property="og:site_name" content="RLC Madagascar Chapter" />
 
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
