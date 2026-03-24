@@ -1,10 +1,14 @@
 import { useState } from "react";
+import { supabase } from "../lib/supabase";
 import "./AlumniFormModal.css";
 
 const TRACKS = [
   "Business & Entrepreneuriat",
   "Leadership Civique",
   "Management Public & Gouvernance",
+  "Education Changemaker",
+  "Wash",
+  "Energie",
 ];
 
 const REGIONS = [
@@ -15,25 +19,25 @@ const REGIONS = [
   "Atsimo-Andrefana", "Androy", "Anosy", "Menabe", "Diana", "Sava",
 ];
 
-const COHORTS = [
-  "Cohort 1 - 2019", "Cohort 2 - 2020", "Cohort 3 - 2021",
-  "Cohort 4 - 2022", "Cohort 5 - 2023",
-];
-
 const empty = {
-  name: "", cohort: "", track: "", region: "",
+  name: "", cohort_type: "", cohort_number: "", track: "", region: "",
   location: "", position: "", organization: "", linkedin: "",
 };
 
 export default function AlumniFormModal({ onClose, onSubmit }) {
   const [form, setForm] = useState(empty);
+  const [photoFile, setPhotoFile] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState(null);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   function validate() {
     const e = {};
     if (!form.name.trim()) e.name = "Champ requis";
-    if (!form.cohort) e.cohort = "Champ requis";
+    if (!form.cohort_type) e.cohort_type = "Champ requis";
+    if (!form.cohort_number.trim()) e.cohort_number = "Champ requis";
     if (!form.track) e.track = "Champ requis";
     if (!form.region) e.region = "Champ requis";
     if (!form.location) e.location = "Champ requis";
@@ -47,17 +51,58 @@ export default function AlumniFormModal({ onClose, onSubmit }) {
     setErrors((er) => ({ ...er, [e.target.name]: undefined }));
   }
 
-  function handleSubmit(e) {
+  function handlePhoto(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    setPhotoFile(file);
+    setPhotoPreview(URL.createObjectURL(file));
+  }
+
+  async function uploadPhoto() {
+    if (!photoFile) return null;
+    const ext = photoFile.name.split(".").pop();
+    const filePath = `alumni/${Date.now()}.${ext}`;
+    const { error } = await supabase.storage
+      .from("avatars")
+      .upload(filePath, photoFile, { upsert: true });
+    if (error) throw new Error(error.message);
+    const { data: { publicUrl } } = supabase.storage
+      .from("avatars")
+      .getPublicUrl(filePath);
+    return publicUrl;
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
-    const newAlumni = {
-      ...form,
-      id: Date.now(),
-      avatar: `https://i.pravatar.cc/150?u=${encodeURIComponent(form.name)}`,
-    };
-    onSubmit(newAlumni);
-    setSubmitted(true);
+
+    setLoading(true);
+    setServerError("");
+    try {
+      const avatarUrl = await uploadPhoto()
+        ?? `https://i.pravatar.cc/150?u=${encodeURIComponent(form.name)}`;
+
+      const newAlumni = {
+        name: form.name,
+        cohort_type: form.cohort_type,
+        cohort: `${form.cohort_type} ${form.cohort_number}`,
+        track: form.track,
+        region: form.region,
+        location: form.location,
+        position: form.position,
+        organization: form.organization,
+        linkedin: form.linkedin,
+        avatar: avatarUrl,
+      };
+
+      await onSubmit(newAlumni);
+      setSubmitted(true);
+    } catch {
+      setServerError("Une erreur est survenue. Veuillez réessayer.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -79,40 +124,68 @@ export default function AlumniFormModal({ onClose, onSubmit }) {
 
             <form className="modal__form" onSubmit={handleSubmit} noValidate>
 
+              {/* Photo */}
+              <div className="modal__field modal__field--photo">
+                <label>Photo de profil</label>
+                <div className="modal__photo-wrap">
+                  <div className="modal__photo-preview">
+                    {photoPreview
+                      ? <img src={photoPreview} alt="Aperçu" />
+                      : <span className="modal__photo-placeholder">👤</span>
+                    }
+                  </div>
+                  <label className="modal__photo-btn">
+                    {photoPreview ? "Changer la photo" : "Choisir une photo"}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhoto}
+                      style={{ display: "none" }}
+                    />
+                  </label>
+                </div>
+              </div>
+
+              {/* Nom */}
               <div className="modal__field">
                 <label>Nom complet *</label>
                 <input name="name" value={form.name} onChange={handle} placeholder="Ex: Rakoto Andrianantenaina" />
                 {errors.name && <span className="modal__error">{errors.name}</span>}
               </div>
 
+              {/* Cohort/Session */}
               <div className="modal__row">
                 <div className="modal__field">
-                  <label>Cohorte *</label>
-                  <select name="cohort" value={form.cohort} onChange={handle}>
+                  <label>Type *</label>
+                  <select name="cohort_type" value={form.cohort_type} onChange={handle}>
                     <option value="">Sélectionner</option>
-                    {COHORTS.map((c) => <option key={c} value={c}>{c}</option>)}
+                    <option value="Cohort">Cohort</option>
+                    <option value="Session">Session</option>
                   </select>
-                  {errors.cohort && <span className="modal__error">{errors.cohort}</span>}
+                  {errors.cohort_type && <span className="modal__error">{errors.cohort_type}</span>}
                 </div>
                 <div className="modal__field">
-                  <label>Centre de formation *</label>
+                  <label style={{ fontSize: "0.7rem" }}>Numéro du cohort ou année *</label>
+                  <input
+                    name="cohort_number"
+                    value={form.cohort_number}
+                    onChange={handle}
+                    placeholder="Ex: 1 ou 2024"
+                  />
+                  {errors.cohort_number && <span className="modal__error">{errors.cohort_number}</span>}
+                </div>
+              </div>
+
+              {/* Centre + Région */}
+              <div className="modal__row">
+                <div className="modal__field">
+                  <label>Centre *</label>
                   <select name="location" value={form.location} onChange={handle}>
                     <option value="">Sélectionner</option>
                     <option value="Afrique du Sud">🇿🇦 Afrique du Sud</option>
                     <option value="Sénégal">🇸🇳 Sénégal</option>
                   </select>
                   {errors.location && <span className="modal__error">{errors.location}</span>}
-                </div>
-              </div>
-
-              <div className="modal__row">
-                <div className="modal__field">
-                  <label>Parcours *</label>
-                  <select name="track" value={form.track} onChange={handle}>
-                    <option value="">Sélectionner</option>
-                    {TRACKS.map((tr) => <option key={tr} value={tr}>{tr}</option>)}
-                  </select>
-                  {errors.track && <span className="modal__error">{errors.track}</span>}
                 </div>
                 <div className="modal__field">
                   <label>Région *</label>
@@ -124,6 +197,17 @@ export default function AlumniFormModal({ onClose, onSubmit }) {
                 </div>
               </div>
 
+              {/* Parcours */}
+              <div className="modal__field">
+                <label>Parcours *</label>
+                <select name="track" value={form.track} onChange={handle}>
+                  <option value="">Sélectionner</option>
+                  {TRACKS.map((tr) => <option key={tr} value={tr}>{tr}</option>)}
+                </select>
+                {errors.track && <span className="modal__error">{errors.track}</span>}
+              </div>
+
+              {/* Poste + Organisation */}
               <div className="modal__field">
                 <label>Poste actuel *</label>
                 <input name="position" value={form.position} onChange={handle} placeholder="Ex: Directeur Général" />
@@ -136,13 +220,16 @@ export default function AlumniFormModal({ onClose, onSubmit }) {
                 {errors.organization && <span className="modal__error">{errors.organization}</span>}
               </div>
 
+              {/* LinkedIn */}
               <div className="modal__field">
                 <label>Profil LinkedIn</label>
                 <input name="linkedin" value={form.linkedin} onChange={handle} placeholder="https://linkedin.com/in/votre-profil" />
               </div>
 
-              <button type="submit" className="modal__btn modal__btn--full">
-                Ajouter mon profil
+              {serverError && <p className="modal__error modal__error--server">{serverError}</p>}
+
+              <button type="submit" className="modal__btn modal__btn--full" disabled={loading}>
+                {loading ? "Enregistrement…" : "Ajouter mon profil"}
               </button>
 
             </form>

@@ -1,36 +1,19 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useLang } from "../context/LangContext";
 import { FaLinkedinIn } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import AlumniFormModal from "../components/AlumniFormModal";
-import { alumniData } from "../data/alumni";
+import { supabase } from "../lib/supabase";
 import "./DirectoryPage.css";
 
-const STORAGE_KEY = "rlc_alumni_custom";
-
-function loadCustom() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-  catch { return []; }
-}
-
-function saveCustom(list) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-}
-
 const TRACK_META = {
-  "Business & Entrepreneuriat": {
-    bg: "#e8f6fd",
-    color: "#009dea",
-  },
-  "Leadership Civique": {
-    bg: "#e8fdf0",
-    color: "#00a86b",
-  },
-  "Management Public & Gouvernance": {
-    bg: "#fdf4e8",
-    color: "#f09000",
-  },
+  "Business & Entrepreneuriat":        { bg: "#e8f6fd", color: "#009dea" },
+  "Leadership Civique":                { bg: "#e8fdf0", color: "#00a86b" },
+  "Management Public & Gouvernance":   { bg: "#fdf4e8", color: "#f09000" },
+  "Education Changemaker":             { bg: "#f3e8fd", color: "#8b00ea" },
+  "Wash":                              { bg: "#e8f8fd", color: "#0099b8" },
+  "Energie":                           { bg: "#fff8e8", color: "#d4a000" },
 };
 
 const LOCATION_FLAG = {
@@ -38,30 +21,44 @@ const LOCATION_FLAG = {
   "Sénégal": "🇸🇳",
 };
 
-const ALL_COHORTS = [...new Set(alumniData.map((a) => a.cohort))].sort();
-const ALL_TRACKS = [...new Set(alumniData.map((a) => a.track))].sort();
-const ALL_REGIONS = [...new Set(alumniData.map((a) => a.region))].sort();
-
 export default function DirectoryPage() {
   const { t } = useLang();
 
-  const [customAlumni, setCustomAlumni] = useState(loadCustom);
+  const [alumni, setAlumni] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState("");
   const [filterLocation, setFilterLocation] = useState("");
   const [filterTrack, setFilterTrack] = useState("");
   const [filterRegion, setFilterRegion] = useState("");
 
-  const allAlumni = useMemo(() => [...alumniData, ...customAlumni], [customAlumni]);
+  useEffect(() => {
+    async function fetchAlumni() {
+      const { data, error } = await supabase
+        .from("alumni")
+        .select("*")
+        .order("cohort", { ascending: true });
+if (!error) setAlumni(data);
+      setLoading(false);
+    }
+    fetchAlumni();
+  }, []);
 
-  function handleAddAlumni(newAlumni) {
-    const updated = [...customAlumni, newAlumni];
-    setCustomAlumni(updated);
-    saveCustom(updated);
+  async function handleAddAlumni(newAlumni) {
+    const { data, error } = await supabase
+      .from("alumni")
+      .insert([newAlumni])
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    setAlumni((prev) => [...prev, data]);
   }
 
+  const allTracks = useMemo(() => [...new Set(alumni.map((a) => a.track))].sort(), [alumni]);
+  const allRegions = useMemo(() => [...new Set(alumni.map((a) => a.region))].sort(), [alumni]);
+
   const filtered = useMemo(() => {
-    return allAlumni.filter((a) => {
+    return alumni.filter((a) => {
       const matchSearch =
         search === "" ||
         a.name.toLowerCase().includes(search.toLowerCase());
@@ -70,7 +67,7 @@ export default function DirectoryPage() {
       const matchRegion = filterRegion === "" || a.region === filterRegion;
       return matchSearch && matchLocation && matchTrack && matchRegion;
     });
-  }, [search, filterLocation, filterTrack, filterRegion, allAlumni]);
+  }, [search, filterLocation, filterTrack, filterRegion, alumni]);
 
   function resetFilters() {
     setSearch("");
@@ -143,7 +140,7 @@ export default function DirectoryPage() {
               onChange={(e) => setFilterTrack(e.target.value)}
             >
               <option value="">Tous les parcours</option>
-              {ALL_TRACKS.map((tr) => (
+              {allTracks.map((tr) => (
                 <option key={tr} value={tr}>{tr}</option>
               ))}
             </select>
@@ -154,7 +151,7 @@ export default function DirectoryPage() {
               onChange={(e) => setFilterRegion(e.target.value)}
             >
               <option value="">Toutes les régions</option>
-              {ALL_REGIONS.map((r) => (
+              {allRegions.map((r) => (
                 <option key={r} value={r}>{r}</option>
               ))}
             </select>
@@ -167,12 +164,16 @@ export default function DirectoryPage() {
           </div>
 
           {/* Result count */}
-          <p className="dir-page__count">
-            {filtered.length} alumni{filtered.length !== 1 ? "" : ""} trouvé{filtered.length > 1 ? "s" : ""}
-          </p>
+          {!loading && (
+            <p className="dir-page__count">
+              {filtered.length} alumni trouvé{filtered.length > 1 ? "s" : ""}
+            </p>
+          )}
 
           {/* Grid */}
-          {filtered.length > 0 ? (
+          {loading ? (
+            <div className="dir-page__empty"><p>Chargement…</p></div>
+          ) : filtered.length > 0 ? (
             <div className="dir-page__grid">
               {filtered.map((alumni) => {
                 const trackStyle = TRACK_META[alumni.track] || {};
