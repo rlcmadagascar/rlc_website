@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 
 const SITE_NAME = "RLC Madagascar";
 const DEFAULT_IMAGE = "/group_photo.jpg";
-const BASE_URL = "https://rlc-madagascar.org";
+const BASE_URL = "https://rlcmadagascar.org";
 
 export default function SEOHead({
   title,

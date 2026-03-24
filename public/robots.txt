@@ -4,4 +4,4 @@ Allow: /
 Disallow: /auth
 Disallow: /profile
 
-Sitemap: https://rlc-madagascar.org/sitemap.xml
+Sitemap: https://rlcmadagascar.org/sitemap.xml
