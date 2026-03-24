@@ -3,7 +3,6 @@ import { useLang } from "../context/LangContext";
 import { FaLinkedinIn } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import AlumniFormModal from "../components/AlumniFormModal";
 import { supabase } from "../lib/supabase";
 import "./DirectoryPage.css";
 
@@ -26,7 +25,6 @@ export default function DirectoryPage() {
 
   const [alumni, setAlumni] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState("");
   const [filterLocation, setFilterLocation] = useState("");
   const [filterTrack, setFilterTrack] = useState("");
@@ -43,16 +41,6 @@ if (!error) setAlumni(data);
     }
     fetchAlumni();
   }, []);
-
-  async function handleAddAlumni(newAlumni) {
-    const { data, error } = await supabase
-      .from("alumni")
-      .insert([newAlumni])
-      .select()
-      .single();
-    if (error) throw new Error(error.message);
-    setAlumni((prev) => [...prev, data]);
-  }
 
   const allTracks = useMemo(() => [...new Set(alumni.map((a) => a.track))].sort(), [alumni]);
   const allRegions = useMemo(() => [...new Set(alumni.map((a) => a.region))].sort(), [alumni]);
@@ -100,13 +88,6 @@ if (!error) setAlumni(data);
         </div>
 
         <div className="dir-page__container">
-
-          {/* Add alumni button */}
-          <div className="dir-page__add-wrap">
-            <button className="dir-page__add-btn" onClick={() => setShowModal(true)}>
-              + Ajouter mon profil
-            </button>
-          </div>
 
           {/* Filter bar */}
           <div className="dir-page__filters">
@@ -247,12 +228,6 @@ if (!error) setAlumni(data);
           )}
         </div>
       </main>
-      {showModal && (
-        <AlumniFormModal
-          onClose={() => setShowModal(false)}
-          onSubmit={(a) => { handleAddAlumni(a); }}
-        />
-      )}
       <Footer />
     </>
   );

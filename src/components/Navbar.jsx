@@ -1,16 +1,30 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLang } from "../context/LangContext";
+import { useAuth } from "../context/AuthContext";
 import { FaChevronDown } from "react-icons/fa";
 import "./Navbar.css";
 
 export default function Navbar() {
   const { lang, toggle, t } = useLang();
+  const { user, signOut } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [initiativesOpen, setInitiativesOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === "/";
+  const userMenuRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setUserMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   function handleHashLink(hash) {
     setMenuOpen(false);
@@ -24,7 +38,16 @@ export default function Navbar() {
   function closeAll() {
     setMenuOpen(false);
     setInitiativesOpen(false);
+    setUserMenuOpen(false);
   }
+
+  async function handleSignOut() {
+    closeAll();
+    await signOut();
+    navigate("/");
+  }
+
+  const userInitial = user?.email?.[0]?.toUpperCase() ?? "?";
 
   return (
     <header className="navbar">
@@ -71,6 +94,29 @@ export default function Navbar() {
           <button className="lang-switcher" onClick={toggle}>
             {lang === "fr" ? "EN" : "FR"}
           </button>
+
+          {/* Auth */}
+          {user ? (
+            <div className="navbar__user" ref={userMenuRef}>
+              <button
+                className="navbar__user-avatar"
+                onClick={() => setUserMenuOpen((o) => !o)}
+                aria-label="Menu utilisateur"
+              >
+                {userInitial}
+              </button>
+              {userMenuOpen && (
+                <div className="navbar__user-menu">
+                  <Link to="/profile" onClick={closeAll}>Mon profil</Link>
+                  <button onClick={handleSignOut}>Déconnexion</button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to="/auth" onClick={closeAll} className="navbar__auth-btn">
+              Connexion
+            </Link>
+          )}
         </nav>
       </div>
     </header>

@@ -150,6 +150,29 @@
   border-radius: 999px;
 }
 
+.alumni-page__empty {
+  text-align: center;
+  color: #aaa;
+  font-size: 1rem;
+  padding: 40px 0;
+}
+
+.alumni-page__initiative-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 14px;
+}
+
+.alumni-page__testimonial-avatar--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
+  font-size: 1.2rem;
+}
+
 .alumni-page__initiative-footer {
   display: flex;
   justify-content: space-between;
@@ -170,11 +193,77 @@
   color: #aaa;
 }
 
-/* ── TESTIMONIALS GRID ──────────────────────────────────────── */
-.alumni-page__testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+/* ── TESTIMONIALS CAROUSEL ──────────────────────────────────── */
+.alumni-page__carousel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.alumni-page__carousel-track {
+  width: 100%;
+  max-width: 720px;
+  position: relative;
+  min-height: 260px;
+}
+
+.alumni-page__testimonial-card--slide {
+  display: none;
+  animation: fadeSlide 0.4s ease;
+}
+
+.alumni-page__testimonial-card--active {
+  display: flex;
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.alumni-page__carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #003d6b;
+  transition: border-color 0.2s, background 0.2s;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.alumni-page__carousel-btn:hover { border-color: #009dea; background: #f0f8ff; }
+.alumni-page__carousel-btn--prev { left: -56px; }
+.alumni-page__carousel-btn--next { right: -56px; }
+
+.alumni-page__carousel-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.alumni-page__carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: #d0e4f7;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  padding: 0;
+}
+.alumni-page__carousel-dot--active {
+  background: #009dea;
+  transform: scale(1.3);
 }
 
 .alumni-page__testimonial-card {
@@ -266,7 +355,7 @@
     grid-template-columns: 1fr;
   }
 
-  .alumni-page__testimonials-grid {
-    grid-template-columns: 1fr;
-  }
+  .alumni-page__carousel-btn--prev { left: -12px; }
+  .alumni-page__carousel-btn--next { right: -12px; }
+  .alumni-page__carousel-btn { width: 36px; height: 36px; font-size: 1.3rem; }
 }
