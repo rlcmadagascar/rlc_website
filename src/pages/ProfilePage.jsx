@@ -267,7 +267,7 @@ export default function ProfilePage() {
     <>
       <SEOHead title="Mon Profil" noIndex={true} url="/profile" />
       <Navbar />
-      <main className="profile-page">
+      <main id="main-content" tabIndex={-1} className="profile-page">
 
         {/* HERO */}
         <div className="profile-page__hero">

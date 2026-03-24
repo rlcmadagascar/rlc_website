@@ -23,7 +23,7 @@ export default function AboutPage() {
         image="/group_photo.jpg"
       />
       <Navbar />
-      <main className="about-page">
+      <main id="main-content" tabIndex={-1} className="about-page">
 
         {/* Hero image */}
         <div className="about-page__hero">

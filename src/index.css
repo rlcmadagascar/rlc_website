@@ -18,6 +18,31 @@ body {
   min-width: 320px;
 }
 
+/* Skip to content — visible uniquement au focus clavier */
+.skip-to-content {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  background: #003d6b;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0 0 10px 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  z-index: 10000;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* Supprime le outline par défaut sur <main> quand il reçoit le focus programmatique */
+main:focus {
+  outline: none;
+}
+
 .container {
   max-width: 1170px;
   margin: 0 auto;

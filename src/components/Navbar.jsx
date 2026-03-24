@@ -15,6 +15,8 @@ export default function Navbar() {
   const navigate = useNavigate();
   const isHome = location.pathname === "/";
   const userMenuRef = useRef(null);
+  const initiativesTriggerRef = useRef(null);
+  const initiativesMenuRef = useRef(null);
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -75,13 +77,34 @@ export default function Navbar() {
           {/* Dropdown Nos Initiatives */}
           <div className={`navbar__dropdown ${initiativesOpen ? "navbar__dropdown--open" : ""}`}>
             <button
+              ref={initiativesTriggerRef}
               className="navbar__dropdown-trigger"
               onClick={() => setInitiativesOpen((o) => !o)}
               aria-expanded={initiativesOpen}
+              aria-haspopup="true"
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  e.preventDefault();
+                  setInitiativesOpen(true);
+                  initiativesMenuRef.current?.querySelector("a")?.focus();
+                }
+                if (e.key === "Escape" && initiativesOpen) {
+                  setInitiativesOpen(false);
+                }
+              }}
             >
               {t.nav.initiatives} <FaChevronDown className="navbar__dropdown-icon" />
             </button>
-            <div className="navbar__dropdown-menu">
+            <div
+              ref={initiativesMenuRef}
+              className="navbar__dropdown-menu"
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  setInitiativesOpen(false);
+                  initiativesTriggerRef.current?.focus();
+                }
+              }}
+            >
               <Link to="/initiatives/spotlight" onClick={closeAll}>Alumni Initiative Spotlight</Link>
               <Link to="/initiatives/fireside" onClick={closeAll}>Fireside Chat</Link>
               <Link to="/initiatives/autres" onClick={closeAll}>{t.nav.autresInitiatives}</Link>

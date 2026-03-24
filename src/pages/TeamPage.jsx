@@ -67,7 +67,7 @@ export default function TeamPage() {
         url="/team"
       />
       <Navbar />
-      <main className="team-page">
+      <main id="main-content" tabIndex={-1} className="team-page">
 
         {/* HERO */}
         <div className="team-page__hero">

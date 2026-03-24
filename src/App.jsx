@@ -49,7 +49,7 @@ function Home() {
         jsonLd={ORGANIZATION_JSON_LD}
       />
       <Navbar />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <Hero />
         <Programs />
         <About />
@@ -67,6 +67,9 @@ export default function App() {
     <LangProvider>
       <AuthProvider>
         <BrowserRouter>
+          <a href="#main-content" className="skip-to-content">
+            Aller au contenu principal
+          </a>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<AboutPage />} />

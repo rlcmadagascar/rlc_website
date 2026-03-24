@@ -85,7 +85,7 @@ export default function InitiativeArticlePage() {
         url={`/initiatives/article/${id}`}
       />
       <Navbar />
-      <main className="iarticle-page">
+      <main id="main-content" tabIndex={-1} className="iarticle-page">
         <div className="iarticle-container">
           <Link to={`/initiatives/${article.category}`} className="iarticle-back">
             <FaArrowLeft /> Retour

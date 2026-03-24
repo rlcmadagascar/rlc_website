@@ -54,7 +54,7 @@ export default function InitiativePage() {
         type="article"
       />
       <Navbar />
-      <main className="init-page">
+      <main id="main-content" tabIndex={-1} className="init-page">
 
         {/* Hero */}
         <div className="init-page__hero" style={{ "--accent": color }}>

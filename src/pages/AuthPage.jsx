@@ -119,7 +119,7 @@ export default function AuthPage() {
     <>
       <SEOHead title="Connexion" noIndex={true} url="/auth" />
       <Navbar />
-      <main className="auth-page">
+      <main id="main-content" tabIndex={-1} className="auth-page">
         <div className="auth-card">
           <div className="auth-card__logo">
             <img src="/logo_rlc.png" alt="RLC Madagascar" />

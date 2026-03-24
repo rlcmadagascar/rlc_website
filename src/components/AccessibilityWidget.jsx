@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./AccessibilityWidget.css";
 
 const DEFAULTS = {
@@ -55,11 +55,22 @@ function loadSettings() {
 export default function AccessibilityWidget() {
   const [open, setOpen] = useState(false);
   const [settings, setSettings] = useState(loadSettings);
+  const triggerRef = useRef(null);
+  const closeRef = useRef(null);
 
   useEffect(() => {
     applySettings(settings);
     localStorage.setItem("a11y_settings", JSON.stringify(settings));
   }, [settings]);
+
+  // Gestion du focus : vers le bouton fermer à l'ouverture, retour au trigger à la fermeture
+  useEffect(() => {
+    if (open) {
+      closeRef.current?.focus();
+    } else {
+      triggerRef.current?.focus();
+    }
+  }, [open]);
 
   function toggle(key) {
     setSettings((s) => ({ ...s, [key]: !s[key] }));
@@ -83,6 +94,7 @@ export default function AccessibilityWidget() {
     <>
       {/* Floating trigger */}
       <button
+        ref={triggerRef}
         className="a11y-trigger"
         onClick={() => setOpen((o) => !o)}
         aria-label="Ouvrir le menu d'accessibilité"
@@ -101,12 +113,14 @@ export default function AccessibilityWidget() {
         <div
           className="a11y-panel"
           role="dialog"
-          aria-modal="false"
+          aria-modal="true"
           aria-label="Options d'accessibilité"
+          onKeyDown={(e) => { if (e.key === "Escape") setOpen(false); }}
         >
           <div className="a11y-panel__header">
             <h2>Accessibilité</h2>
             <button
+              ref={closeRef}
               className="a11y-panel__close"
               onClick={() => setOpen(false)}
               aria-label="Fermer"

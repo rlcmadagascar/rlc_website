@@ -103,7 +103,7 @@ export default function InitiativesNewsPage({ category }) {
         url={`/initiatives/${category}`}
       />
       <Navbar />
-      <main className="inews-page">
+      <main id="main-content" tabIndex={-1} className="inews-page">
 
         {/* Hero */}
         <div className="inews-page__hero">

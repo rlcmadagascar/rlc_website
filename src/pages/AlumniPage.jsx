@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useLang } from "../context/LangContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -20,7 +20,6 @@ export default function AlumniPage() {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const autoPlayRef = useRef(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -43,7 +42,7 @@ export default function AlumniPage() {
         url="/alumni"
       />
       <Navbar />
-      <main className="alumni-page">
+      <main id="main-content" tabIndex={-1} className="alumni-page">
 
         {/* HERO */}
         <div className="alumni-page__hero">

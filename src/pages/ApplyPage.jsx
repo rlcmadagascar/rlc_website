@@ -16,7 +16,7 @@ export default function ApplyPage() {
         url="/apply"
       />
       <Navbar />
-      <main className="apply-page">
+      <main id="main-content" tabIndex={-1} className="apply-page">
 
         <div className="apply-page__hero">
           <div className="apply-page__hero-inner">

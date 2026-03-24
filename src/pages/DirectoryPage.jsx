@@ -74,7 +74,7 @@ if (!error) setAlumni(data);
   return (
     <>
       <Navbar />
-      <main className="dir-page">
+      <main id="main-content" tabIndex={-1} className="dir-page">
 
         {/* Hero */}
         <div className="dir-page__hero">
