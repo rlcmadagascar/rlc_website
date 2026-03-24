@@ -22,12 +22,31 @@ import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
 import AccessibilityWidget from "./components/AccessibilityWidget";
 
+const ORGANIZATION_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "RLC Madagascar Chapter",
+  url: "https://rlcmadagascar.org",
+  logo: "https://rlcmadagascar.org/logo_rlc.png",
+  description:
+    "Réseau de +600 alumni YALI Regional Leadership Center présents dans les 21 régions de Madagascar. Leadership, entrepreneuriat, gouvernance et engagement civique.",
+  foundingLocation: {
+    "@type": "Place",
+    name: "Madagascar",
+  },
+  sameAs: [
+    "https://www.facebook.com/yalirlcmg",
+    "https://www.linkedin.com/company/yalirlcmg",
+  ],
+};
+
 function Home() {
   return (
     <>
       <SEOHead
         description="RLC Madagascar Chapter — réseau de +600 alumni YALI Regional Leadership Center présents dans les 21 régions de Madagascar. Leadership, entrepreneuriat, gouvernance et engagement civique."
         url="/"
+        jsonLd={ORGANIZATION_JSON_LD}
       />
       <Navbar />
       <main>
