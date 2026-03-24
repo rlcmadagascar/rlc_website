@@ -18,8 +18,8 @@ export default function Footer() {
           <div className="footer__social-group">
             <span>{t.footer.follow}</span>
             <div className="footer__icons">
-              <a href="#" aria-label="Facebook"><FaFacebookF /></a>
-              <a href="#" aria-label="LinkedIn"><FaLinkedinIn /></a>
+              <a href="https://www.facebook.com/yalirlcmg" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebookF /></a>
+              <a href="https://www.linkedin.com/company/yalirlcmg" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><FaLinkedinIn /></a>
             </div>
           </div>
         </div>

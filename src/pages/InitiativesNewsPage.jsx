@@ -1,31 +1,99 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLang } from "../context/LangContext";
+import { supabase } from "../lib/supabase";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SEOHead from "../components/SEOHead";
-import { FaCalendarAlt, FaUser, FaArrowLeft } from "react-icons/fa";
+import { FaCalendarAlt, FaUser, FaArrowLeft, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "./InitiativesNewsPage.css";
 
+const ITEMS_PER_PAGE = 6;
+
+const categoryMeta = {
+  spotlight: {
+    title: "Spotlight",
+    description: "Découvrez les histoires à la une des alumni RLC Madagascar — leurs projets, réussites et impact sur leurs communautés.",
+  },
+  fireside: {
+    title: "Fireside Chats",
+    description: "Les Fireside Chats du RLC Madagascar — des conversations inspirantes avec des alumni leaders qui partagent leur parcours et vision.",
+  },
+  autres: {
+    title: "Kodata — Autres Initiatives",
+    description: "Kodata : les autres initiatives et actualités du RLC Madagascar Chapter — événements, projets communautaires et actions collectives.",
+  },
+};
+
 export default function InitiativesNewsPage({ category }) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const p = t.initiativesPage;
   const section = p[category];
-
-  const categoryMeta = {
-    spotlight: {
-      title: "Spotlight",
-      description: "Découvrez les histoires à la une des alumni RLC Madagascar — leurs projets, réussites et impact sur leurs communautés.",
-    },
-    fireside: {
-      title: "Fireside Chats",
-      description: "Les Fireside Chats du RLC Madagascar — des conversations inspirantes avec des alumni leaders qui partagent leur parcours et vision.",
-    },
-    autres: {
-      title: "Kodata — Autres Initiatives",
-      description: "Kodata : les autres initiatives et actualités du RLC Madagascar Chapter — événements, projets communautaires et actions collectives.",
-    },
-  };
   const meta = categoryMeta[category] || { title: "Initiatives", description: "Les initiatives du RLC Madagascar Chapter." };
+
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+
+  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+
+  useEffect(() => {
+    setPage(1);
+  }, [category]);
+
+  useEffect(() => {
+    async function fetchArticles() {
+      setLoading(true);
+      setError(null);
+      const from = (page - 1) * ITEMS_PER_PAGE;
+      const to = from + ITEMS_PER_PAGE - 1;
+
+      const { data, error, count } = await supabase
+        .from("initiatives_articles")
+        .select("*", { count: "exact" })
+        .eq("category", category)
+        .eq("published", true)
+        .order("sort_order", { ascending: true })
+        .order("date", { ascending: false })
+        .range(from, to);
+
+      if (error) {
+        setError(error.message);
+      } else {
+        setArticles(data);
+        setTotal(count);
+      }
+      setLoading(false);
+    }
+    fetchArticles();
+  }, [category, page]);
+
+  const getImage = (a) => {
+    if (a.image_path) {
+      return supabase.storage.from("article-images").getPublicUrl(a.image_path).data.publicUrl;
+    }
+    return a.image_url;
+  };
+
+  const getTitle = (a) => (lang === "fr" ? a.title_fr : a.title_en);
+  const getExcerpt = (a) => (lang === "fr" ? a.excerpt_fr : a.excerpt_en);
+  const getTag = (a) => (lang === "fr" ? a.tag_fr : a.tag_en);
+  const formatDate = (iso) => {
+    if (!iso) return "";
+    const d = new Date(iso);
+    return d.toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const goTo = (p) => {
+    setPage(p);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -56,25 +124,62 @@ export default function InitiativesNewsPage({ category }) {
             <FaArrowLeft /> {p.backLabel}
           </Link>
 
-          <div className="inews-page__grid">
-            {section.articles.map((article, i) => (
-              <article className="inews-card" key={i}>
-                <div className="inews-card__image-wrap">
-                  <img src={article.image} alt={article.title} className="inews-card__image" />
-                  <span className="inews-card__tag">{article.tag}</span>
+          {loading && <p className="inews-page__status">Chargement…</p>}
+          {error && <p className="inews-page__status inews-page__status--error">{error}</p>}
+
+          {!loading && !error && (
+            <>
+              <div className="inews-page__grid">
+                {articles.map((article) => (
+                  <article className="inews-card" key={article.id}>
+                    <div className="inews-card__image-wrap">
+                      <img src={getImage(article)} alt={getTitle(article)} className="inews-card__image" />
+                      <span className="inews-card__tag">{getTag(article)}</span>
+                    </div>
+                    <div className="inews-card__body">
+                      <h2 className="inews-card__title">{getTitle(article)}</h2>
+                      <div className="inews-card__meta">
+                        <span><FaCalendarAlt /> {formatDate(article.date)}</span>
+                        <span><FaUser /> {article.author}</span>
+                      </div>
+                      <p className="inews-card__excerpt">{getExcerpt(article)}</p>
+                      <Link to={`/initiatives/article/${article.id}`} className="inews-card__cta">{p.readMore}</Link>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="inews-pagination">
+                  <button
+                    className="inews-pagination__btn"
+                    onClick={() => goTo(page - 1)}
+                    disabled={page === 1}
+                  >
+                    <FaChevronLeft />
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                    <button
+                      key={n}
+                      className={`inews-pagination__btn ${n === page ? "inews-pagination__btn--active" : ""}`}
+                      onClick={() => goTo(n)}
+                    >
+                      {n}
+                    </button>
+                  ))}
+
+                  <button
+                    className="inews-pagination__btn"
+                    onClick={() => goTo(page + 1)}
+                    disabled={page === totalPages}
+                  >
+                    <FaChevronRight />
+                  </button>
                 </div>
-                <div className="inews-card__body">
-                  <h2 className="inews-card__title">{article.title}</h2>
-                  <div className="inews-card__meta">
-                    <span><FaCalendarAlt /> {article.date}</span>
-                    <span><FaUser /> {article.author}</span>
-                  </div>
-                  <p className="inews-card__excerpt">{article.excerpt}</p>
-                  <button className="inews-card__cta">{p.readMore}</button>
-                </div>
-              </article>
-            ))}
-          </div>
+              )}
+            </>
+          )}
         </div>
       </main>
       <Footer />
