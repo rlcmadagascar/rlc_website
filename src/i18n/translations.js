@@ -28,7 +28,7 @@ export const translations = {
     chapter: {
       title: "RLC Madagascar Chapter",
       text1: "The RLC Madagascar Chapter brings together alumni who completed their leadership training in South Africa and Senegal. It is a community of young leaders committed to driving positive change across Madagascar.",
-      text2: "With alumni present in all 21 regions of Madagascar, the RLC Madagascar Chapter embodies a truly national network. From Antananarivo to Toliara, from Diana to Atsimo-Andrefana, these leaders are active in their communities, applying the skills acquired through the RLC program to support local development, civic engagement, entrepreneurship, and public governance.",
+      text2: "With alumni present in all 21 regions of Madagascar, the RLC Madagascar Chapter embodies a truly national network. From Antananarivo to Toliara, from Diana to Atsimo-Andrefana, these leaders are active in their communities, applying the skills acquired through the RLC program to support local development, civic engagement, entrepreneurship, and public governance. The RLC Madagascar Chapter is part of the Madagascar United States Exchange Alumni (MUSEA) and the YALI Chapter Madagascar.",
       stats: [
         { value: 600, prefix: "+", label: "Alumni" },
         { value: 21, label: "Regions covered" },
@@ -93,7 +93,7 @@ export const translations = {
       ctaLink: "https://yaliafricarecruitment.org/",
     },
     partners: {
-      title: "Our Partner",
+      title: "Our Partners",
       items: ["UNISA", "The Nomads Foundation", "Mastercard Foundation"],
     },
     aboutPage: {
@@ -240,7 +240,7 @@ export const translations = {
     chapter: {
       title: "RLC Madagascar Chapter",
       text1: "Le RLC Madagascar Chapter regroupe les alumni ayant effectué leur formation en leadership en Afrique du Sud et au Sénégal. C'est une communauté de jeunes leaders engagés à impulser un changement positif à travers tout Madagascar.",
-      text2: "Avec des alumni présents dans les 21 régions de Madagascar, le RLC Madagascar Chapter incarne un réseau véritablement national. D'Antananarivo à Toliara, de Diana à Atsimo-Andrefana, ces leaders sont actifs dans leurs communautés, mettant en pratique les compétences acquises lors du programme RLC pour soutenir le développement local, l'engagement civique, l'entrepreneuriat et la gouvernance publique.",
+      text2: "Avec des alumni présents dans les 21 régions de Madagascar, le RLC Madagascar Chapter incarne un réseau véritablement national. D'Antananarivo à Toliara, de Diana à Atsimo-Andrefana, ces leaders sont actifs dans leurs communautés, mettant en pratique les compétences acquises lors du programme RLC pour soutenir le développement local, l'engagement civique, l'entrepreneuriat et la gouvernance publique. Le RLC Madagascar Chapter fait partie du Madagascar United States Exchange Alumni (MUSEA) et du YALI Chapter Madagascar.",
       stats: [
         { value: 600, prefix: "+", label: "Alumni" },
         { value: 21, label: "Régions couvertes" },
@@ -335,7 +335,7 @@ export const translations = {
       ctaLink: "https://yaliafricarecruitment.org/",
     },
     partners: {
-      title: "Notre Partenaire",
+      title: "Nos Partenaires",
       items: ["UNISA", "The Nomads Foundation", "Mastercard Foundation"],
     },
     alumniPage: {

@@ -2,6 +2,7 @@ import { useLang } from "../context/LangContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SEOHead from "../components/SEOHead";
+import "../components/Partners.css";
 import {
   FaLaptop, FaUsers, FaHandshake, FaPeopleArrows,
   FaSeedling, FaToolbox,
@@ -81,6 +82,16 @@ export default function AboutPage() {
           </section>
 
         </div>
+        <section className="partners">
+          <div className="container">
+            <h2 className="section-title">Partenaire</h2>
+            <div className="partners__logos-static">
+              <div className="partners__logo">
+                <img src="/logo_unisa.jpg" alt="UNISA - University of South Africa" />
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </>

@@ -1,32 +1,70 @@
 .partners {
   padding: 60px 20px;
   background: #fff;
+  overflow: hidden;
 }
 
-.partners__grid {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 48px;
-  flex-wrap: wrap;
+.partners__track-wrapper {
+  overflow: hidden;
   margin-top: 20px;
+}
+
+.partners__track {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  width: max-content;
+  animation: scroll-right 18s linear infinite;
+}
+
+.partners__track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .partners__logo {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .partners__logo img {
-  height: 180px;
-  width: 320px;
-  object-fit: cover;
-  object-position: center;
+  height: 100px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
   filter: grayscale(20%);
-  transition: filter 0.2s;
+  transition: filter 0.2s, transform 0.2s;
+}
+
+.partners__logo img[src="/logo_unisa.jpg"] {
+  height: 160px;
+  max-width: 300px;
 }
 
 .partners__logo img:hover {
   filter: grayscale(0%);
+  transform: scale(1.05);
+}
+
+/* About page — static UNISA only */
+.partners__logos-static {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.partners__logos-static .partners__logo img {
+  height: 320px;
+  max-width: 550px;
 }
