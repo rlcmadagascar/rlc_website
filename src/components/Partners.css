@@ -46,7 +46,12 @@
   transition: filter 0.2s, transform 0.2s;
 }
 
-.partners__logo img[src="/logo_unisa.jpg"] {
+.partners__logo img[src="/logo_unisa.webp"] {
+  height: 200px;
+  max-width: 360px;
+}
+
+.partners__logo img[src="/logo_musea.webp"] {
   height: 160px;
   max-width: 300px;
 }
