@@ -91,3 +91,16 @@
   font-size: 0.82rem;
   color: #666;
 }
+
+.footer__made-by {
+  margin-top: 4px;
+}
+
+.footer__made-by a {
+  color: #009dea;
+  text-decoration: none;
+}
+
+.footer__made-by a:hover {
+  text-decoration: underline;
+}

@@ -26,6 +26,7 @@ export default function Footer() {
       </div>
       <div className="footer__bottom">
         <p>{t.footer.rights}</p>
+        <p className="footer__made-by">Website made with ❤️ by <a href="https://dts.dabil.io" target="_blank" rel="noopener noreferrer">DTS</a></p>
       </div>
     </footer>
   );
