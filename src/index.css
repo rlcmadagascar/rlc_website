@@ -16,6 +16,12 @@
 
 body {
   min-width: 320px;
+  animation: page-fadein 0.6s ease both;
+}
+
+@keyframes page-fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 /* Skip to content — visible uniquement au focus clavier */
