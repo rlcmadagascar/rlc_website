@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabase";
+import { validateImageFile } from "../lib/sanitize";
 import "./AlumniFormModal.css";
 
 const TRACKS = [
@@ -60,6 +61,8 @@ export default function AlumniFormModal({ onClose, onSubmit }) {
 
   async function uploadPhoto() {
     if (!photoFile) return null;
+    const validationError = await validateImageFile(photoFile);
+    if (validationError) throw new Error(validationError);
     const ext = photoFile.name.split(".").pop();
     const filePath = `alumni/${Date.now()}.${ext}`;
     const { error } = await supabase.storage
@@ -98,8 +101,8 @@ export default function AlumniFormModal({ onClose, onSubmit }) {
 
       await onSubmit(newAlumni);
       setSubmitted(true);
-    } catch {
-      setServerError("Une erreur est survenue. Veuillez réessayer.");
+    } catch (err) {
+      setServerError(err.message || "Une erreur est survenue. Veuillez réessayer.");
     } finally {
       setLoading(false);
     }

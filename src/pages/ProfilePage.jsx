@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
-import { isSafeAvatarUrl } from "../lib/sanitize";
+import { isSafeAvatarUrl, validateImageFile } from "../lib/sanitize";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SEOHead from "../components/SEOHead";
@@ -122,6 +122,8 @@ export default function ProfilePage() {
 
   // --- Upload helpers ---
   async function uploadFile(file, path) {
+    const validationError = await validateImageFile(file);
+    if (validationError) throw new Error(validationError);
     const ext = file.name.split(".").pop();
     const filePath = `${path}/${Date.now()}.${ext}`;
     const { error } = await supabase.storage.from("avatars").upload(filePath, file, { upsert: true });
@@ -150,7 +152,7 @@ export default function ProfilePage() {
         setAlumniRecord(data);
       }
       setProfileMsg("Profil enregistré !");
-    } catch { setProfileMsg("Une erreur est survenue."); }
+    } catch (err) { setProfileMsg(err.message || "Une erreur est survenue."); }
     finally { setProfileSaving(false); }
   }
 
@@ -203,7 +205,7 @@ export default function ProfilePage() {
       setInitiativeMsg("Initiative soumise !");
       const { data } = await supabase.from("initiatives").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
       if (data) setInitiatives(data);
-    } catch { setInitiativeMsg("Une erreur est survenue."); }
+    } catch (err) { setInitiativeMsg(err.message || "Une erreur est survenue."); }
     finally { setInitiativeSaving(false); }
   }
 

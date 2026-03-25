@@ -1,6 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LangProvider } from "./context/LangContext";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import SEOHead from "./components/SEOHead";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -39,6 +39,13 @@ const ORGANIZATION_JSON_LD = {
     "https://www.linkedin.com/company/yalirlcmg",
   ],
 };
+
+function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  if (!user) return <Navigate to="/auth" replace />;
+  return children;
+}
 
 function Home() {
   return (
@@ -83,7 +90,7 @@ export default function App() {
             <Route path="/initiatives/article/:id" element={<InitiativeArticlePage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/auth" element={<AuthPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
           </Routes>
           <AccessibilityWidget />
         </BrowserRouter>

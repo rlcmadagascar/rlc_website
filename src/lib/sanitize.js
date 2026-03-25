@@ -12,6 +12,27 @@ const SUPABASE_STORAGE_RE =
  *  - Supabase Storage public URLs
  *  - https://i.pravatar.cc/* (default avatars)
  */
+/**
+ * Validates a file intended for image upload.
+ * Checks file size and magic bytes (actual file content), not just the extension.
+ * Returns an error string if invalid, null if valid.
+ */
+export async function validateImageFile(file) {
+  const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
+  if (file.size > MAX_SIZE) return "Le fichier dépasse 5 Mo.";
+
+  const buffer = await file.slice(0, 12).arrayBuffer();
+  const b = new Uint8Array(buffer);
+
+  const isJpeg = b[0] === 0xFF && b[1] === 0xD8 && b[2] === 0xFF;
+  const isPng  = b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47;
+  const isWebP = b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46
+              && b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50;
+
+  if (!isJpeg && !isPng && !isWebP) return "Seuls les formats JPEG, PNG et WebP sont acceptés.";
+  return null;
+}
+
 export function isSafeAvatarUrl(url) {
   if (!url || typeof url !== "string") return false;
   if (url.startsWith("blob:")) return true;
