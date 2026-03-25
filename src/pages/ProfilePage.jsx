@@ -39,7 +39,7 @@ const TABS = [
 
 const emptyInitiative = { title: "", sector: "", region: "", tag: "", excerpt: "", description: "" };
 const emptyTestimonial = { quote: "" };
-const emptyTeamMember = { category: "bureau", name: "", role: "", portfolio: "", region: "", period: "", avatar: "", linkedin: "", sort_order: 0 };
+const emptyTeamMember = { category: "bureau", name: "", role: "", role_en: "", portfolio: "", portfolio_en: "", region: "", period: "", avatar: "", linkedin: "", sort_order: 0 };
 
 export default function ProfilePage() {
   const { user, signOut } = useAuth();
@@ -276,15 +276,17 @@ export default function ProfilePage() {
   function editTeamMember(member) {
     setTeamEditing(member.id);
     setTeamForm({
-      category:   member.category,
-      name:       member.name,
-      role:       member.role || "",
-      portfolio:  member.portfolio || "",
-      region:     member.region || "",
-      period:     member.period || "",
-      avatar:     member.avatar || "",
-      linkedin:   member.linkedin || "",
-      sort_order: member.sort_order ?? 0,
+      category:     member.category,
+      name:         member.name,
+      role:         member.role || "",
+      role_en:      member.role_en || "",
+      portfolio:    member.portfolio || "",
+      portfolio_en: member.portfolio_en || "",
+      region:       member.region || "",
+      period:       member.period || "",
+      avatar:       member.avatar || "",
+      linkedin:     member.linkedin || "",
+      sort_order:   member.sort_order ?? 0,
     });
     setTeamMsg("");
     setTeamPhotoFile(null);
@@ -652,15 +654,27 @@ export default function ProfilePage() {
                 </div>
 
                 {teamForm.category === "bureau" && (
-                  <div className="profile-page__field">
-                    <label>Rôle</label>
-                    <input value={teamForm.role} onChange={(e) => setTeamForm((f) => ({ ...f, role: e.target.value }))} placeholder="Ex: Président" />
+                  <div className="profile-page__row">
+                    <div className="profile-page__field">
+                      <label>Rôle (FR)</label>
+                      <input value={teamForm.role} onChange={(e) => setTeamForm((f) => ({ ...f, role: e.target.value }))} placeholder="Ex: Président" />
+                    </div>
+                    <div className="profile-page__field">
+                      <label>Rôle (EN)</label>
+                      <input value={teamForm.role_en} onChange={(e) => setTeamForm((f) => ({ ...f, role_en: e.target.value }))} placeholder="Ex: President" />
+                    </div>
                   </div>
                 )}
                 {teamForm.category === "coordinator" && (
-                  <div className="profile-page__field">
-                    <label>Portefeuille</label>
-                    <input value={teamForm.portfolio} onChange={(e) => setTeamForm((f) => ({ ...f, portfolio: e.target.value }))} placeholder="Ex: Entrepreneuriat" />
+                  <div className="profile-page__row">
+                    <div className="profile-page__field">
+                      <label>Portefeuille (FR)</label>
+                      <input value={teamForm.portfolio} onChange={(e) => setTeamForm((f) => ({ ...f, portfolio: e.target.value }))} placeholder="Ex: Entrepreneuriat" />
+                    </div>
+                    <div className="profile-page__field">
+                      <label>Portefeuille (EN)</label>
+                      <input value={teamForm.portfolio_en} onChange={(e) => setTeamForm((f) => ({ ...f, portfolio_en: e.target.value }))} placeholder="Ex: Entrepreneurship" />
+                    </div>
                   </div>
                 )}
                 {teamForm.category === "focal_point" && (

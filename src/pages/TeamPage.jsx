@@ -9,7 +9,7 @@ import { isSafeAvatarUrl } from "../lib/sanitize";
 import "./TeamPage.css";
 
 export default function TeamPage() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const p = t.teamPage;
 
   const [members, setMembers] = useState({
@@ -92,7 +92,7 @@ export default function TeamPage() {
                 <div className="team-page__bureau-card" key={member.id}>
                   {isSafeAvatarUrl(member.avatar) && <img src={member.avatar} alt={member.name} className="team-page__bureau-avatar" />}
                   <h3 className="team-page__bureau-name">{member.name}</h3>
-                  <span className="team-page__bureau-role">{member.role}</span>
+                  <span className="team-page__bureau-role">{lang === "en" ? (member.role_en || member.role) : member.role}</span>
                   <a href={member.linkedin} className="team-page__linkedin-btn" target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn de ${member.name}`}>
                     <FaLinkedinIn />
                   </a>
@@ -112,7 +112,7 @@ export default function TeamPage() {
                 <div className="team-page__coordinator-card" key={member.id}>
                   {isSafeAvatarUrl(member.avatar) && <img src={member.avatar} alt={member.name} className="team-page__coordinator-avatar" />}
                   <h3 className="team-page__coordinator-name">{member.name}</h3>
-                  <span className="team-page__coordinator-portfolio">{member.portfolio}</span>
+                  <span className="team-page__coordinator-portfolio">{lang === "en" ? (member.portfolio_en || member.portfolio) : member.portfolio}</span>
                   <a href={member.linkedin} className="team-page__linkedin-btn" target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn de ${member.name}`}>
                     <FaLinkedinIn />
                   </a>
