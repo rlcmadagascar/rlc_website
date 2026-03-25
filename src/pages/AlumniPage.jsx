@@ -38,8 +38,12 @@ export default function AlumniPage() {
     <>
       <SEOHead
         title="Alumni & Initiatives"
-        description="Découvrez les initiatives et témoignages des alumni RLC Madagascar — plus de 600 jeunes leaders actifs dans les 21 régions de Madagascar."
+        description="Initiatives et témoignages des alumni YALI RLC Madagascar — +600 jeunes leaders malgaches actifs dans les 21 régions en entrepreneuriat, gouvernance et engagement civique."
         url="/alumni"
+        breadcrumbs={[
+          { name: "Accueil", url: "/" },
+          { name: "Alumni & Initiatives", url: "/alumni" },
+        ]}
       />
       <Navbar />
       <main id="main-content" tabIndex={-1} className="alumni-page">

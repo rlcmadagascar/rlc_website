@@ -63,8 +63,12 @@ export default function TeamPage() {
     <>
       <SEOHead
         title="Notre Équipe"
-        description="Rencontrez l'équipe du RLC Madagascar Chapter — bureau, coordinateurs, points focaux et anciens coordinateurs qui animent le réseau des alumni YALI à Madagascar."
+        description="Rencontrez l'équipe du RLC Madagascar Chapter — bureau, coordinateurs régionaux et points focaux qui animent le réseau alumni YALI dans les 21 régions de Madagascar."
         url="/team"
+        breadcrumbs={[
+          { name: "Accueil", url: "/" },
+          { name: "Notre Équipe", url: "/team" },
+        ]}
       />
       <Navbar />
       <main id="main-content" tabIndex={-1} className="team-page">

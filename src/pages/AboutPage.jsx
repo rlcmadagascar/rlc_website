@@ -19,9 +19,13 @@ export default function AboutPage() {
     <>
       <SEOHead
         title="À Propos"
-        description="Découvrez le RLC Madagascar Chapter — alumni du YALI Regional Leadership Center Southern Africa. Un réseau de jeunes leaders engagés pour le développement, l'entrepreneuriat et la gouvernance à Madagascar."
+        description="Découvrez le RLC Madagascar Chapter — réseau d'alumni YALI RLC Southern Africa à Madagascar. +600 jeunes leaders formés en entrepreneuriat, leadership civique et gouvernance dans les 21 régions."
         url="/about"
-        image="/group_photo.jpg"
+        image="/group_photo.webp"
+        breadcrumbs={[
+          { name: "Accueil", url: "/" },
+          { name: "À Propos", url: "/about" },
+        ]}
       />
       <Navbar />
       <main id="main-content" tabIndex={-1} className="about-page">

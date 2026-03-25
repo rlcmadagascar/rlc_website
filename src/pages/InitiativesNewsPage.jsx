@@ -12,16 +12,19 @@ const ITEMS_PER_PAGE = 6;
 
 const categoryMeta = {
   spotlight: {
-    title: "Spotlight",
-    description: "Découvrez les histoires à la une des alumni RLC Madagascar — leurs projets, réussites et impact sur leurs communautés.",
+    title: "Alumni Initiative Spotlight",
+    description: "Portraits d'alumni YALI RLC Madagascar en action — projets d'entrepreneuriat, leadership civique et développement communautaire à travers les 21 régions.",
+    breadcrumb: "Spotlight",
   },
   fireside: {
     title: "Fireside Chats",
-    description: "Les Fireside Chats du RLC Madagascar — des conversations inspirantes avec des alumni leaders qui partagent leur parcours et vision.",
+    description: "Fireside Chats RLC Madagascar — conversations inspirantes avec des alumni leaders YALI qui partagent leur parcours en entrepreneuriat, gouvernance et engagement civique.",
+    breadcrumb: "Fireside Chats",
   },
   autres: {
-    title: "Kodata — Autres Initiatives",
-    description: "Kodata : les autres initiatives et actualités du RLC Madagascar Chapter — événements, projets communautaires et actions collectives.",
+    title: "Kodata — Actualités & Initiatives",
+    description: "Kodata : actualités et initiatives du RLC Madagascar Chapter — événements, projets communautaires et actions collectives des alumni YALI à Madagascar.",
+    breadcrumb: "Kodata",
   },
 };
 
@@ -101,6 +104,11 @@ export default function InitiativesNewsPage({ category }) {
         title={meta.title}
         description={meta.description}
         url={`/initiatives/${category}`}
+        breadcrumbs={[
+          { name: "Accueil", url: "/" },
+          { name: "Initiatives", url: `/initiatives/${category}` },
+          { name: meta.breadcrumb, url: `/initiatives/${category}` },
+        ]}
       />
       <Navbar />
       <main id="main-content" tabIndex={-1} className="inews-page">

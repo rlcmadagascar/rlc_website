@@ -15,6 +15,7 @@ export default function SEOHead({
   type = "website",
   noIndex = false,
   jsonLd = null,
+  breadcrumbs = null,
 }) {
   const { lang } = useLang();
   const fullTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
@@ -53,6 +54,22 @@ export default function SEOHead({
       {jsonLd && (
         <script type="application/ld+json">
           {JSON.stringify(jsonLd)}
+        </script>
+      )}
+
+      {/* BreadcrumbList */}
+      {breadcrumbs && (
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": breadcrumbs.map((crumb, i) => ({
+              "@type": "ListItem",
+              "position": i + 1,
+              "name": crumb.name,
+              "item": `${BASE_URL}${crumb.url}`,
+            })),
+          })}
         </script>
       )}
     </Helmet>

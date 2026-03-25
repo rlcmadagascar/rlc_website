@@ -12,8 +12,12 @@ export default function ApplyPage() {
     <>
       <SEOHead
         title="Candidature"
-        description="Postulez au programme RLC Madagascar — ouvert aux jeunes de 18 à 35 ans des pays d'Afrique australe. Aucun frais requis. Développez votre leadership en entrepreneuriat, gouvernance et engagement civique."
+        description="Postulez au programme YALI RLC Madagascar — ouvert aux jeunes de 18 à 35 ans. Gratuit. Formation en entrepreneuriat, leadership civique et gouvernance. Rejoignez +600 alumni leaders à Madagascar."
         url="/apply"
+        breadcrumbs={[
+          { name: "Accueil", url: "/" },
+          { name: "Candidature", url: "/apply" },
+        ]}
       />
       <Navbar />
       <main id="main-content" tabIndex={-1} className="apply-page">
