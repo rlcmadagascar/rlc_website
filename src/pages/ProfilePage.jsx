@@ -40,6 +40,7 @@ const TABS = [
 const emptyInitiative = { title: "", sector: "", region: "", tag: "", excerpt: "", description: "" };
 const emptyTestimonial = { quote: "" };
 const emptyTeamMember = { category: "bureau", name: "", role: "", role_en: "", portfolio: "", portfolio_en: "", region: "", period: "", avatar: "", linkedin: "", sort_order: 0 };
+const emptyArticle = { category: "spotlight", title_fr: "", title_en: "", date: "", author: "RLC Madagascar Chapter", tag_fr: "", tag_en: "", image_url: "", excerpt_fr: "", excerpt_en: "", published: true, sort_order: 0 };
 
 export default function ProfilePage() {
   const { user, signOut } = useAuth();
@@ -94,10 +95,22 @@ export default function ProfilePage() {
   const [teamSaving, setTeamSaving] = useState(false);
   const [teamMsg, setTeamMsg] = useState("");
 
+  // Admin — sous-navigation
+  const [adminSection, setAdminSection] = useState("equipe");
+
+  // Admin — Articles
+  const [articles, setArticles] = useState([]);
+  const [articleForm, setArticleForm] = useState(emptyArticle);
+  const [articleEditing, setArticleEditing] = useState(null);
+  const [articleImageFile, setArticleImageFile] = useState(null);
+  const [articleCropSrc, setArticleCropSrc] = useState(null);
+  const [articleSaving, setArticleSaving] = useState(false);
+  const [articleMsg, setArticleMsg] = useState("");
+
   useEffect(() => {
     if (!user) { navigate("/auth"); return; }
     fetchAll();
-    if (isAdmin) fetchTeam();
+    if (isAdmin) { fetchTeam(); fetchArticles(); }
   }, [user]);
 
   async function fetchAll() {
@@ -134,14 +147,14 @@ export default function ProfilePage() {
   }
 
   // --- Upload helpers ---
-  async function uploadFile(file, path) {
+  async function uploadFile(file, path, bucket = "avatars") {
     const validationError = await validateImageFile(file);
     if (validationError) throw new Error(validationError);
     const ext = file.name.split(".").pop();
     const filePath = `${path}/${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from("avatars").upload(filePath, file, { upsert: true });
+    const { error } = await supabase.storage.from(bucket).upload(filePath, file, { upsert: true });
     if (error) throw error;
-    return supabase.storage.from("avatars").getPublicUrl(filePath).data.publicUrl;
+    return supabase.storage.from(bucket).getPublicUrl(filePath).data.publicUrl;
   }
 
   // --- Mon profil ---
@@ -243,6 +256,62 @@ export default function ProfilePage() {
       setPwForm({ newPwd: "", confirm: "" });
     }
     setPwSaving(false);
+  }
+
+  // --- Administration : articles ---
+  async function fetchArticles() {
+    const { data } = await supabase.from("initiatives_articles").select("*").order("sort_order", { ascending: true });
+    if (data) setArticles(data);
+  }
+
+  async function saveArticle(e) {
+    e.preventDefault();
+    if (!articleForm.title_fr.trim()) return;
+    setArticleSaving(true); setArticleMsg("");
+    try {
+      let image_url = articleForm.image_url;
+      if (articleImageFile) {
+        image_url = await uploadFile(articleImageFile, "articles", "article-images");
+      }
+      const payload = { ...articleForm, image_url, sort_order: Number(articleForm.sort_order) };
+      if (articleEditing) {
+        await supabase.from("initiatives_articles").update(payload).eq("id", articleEditing);
+      } else {
+        await supabase.from("initiatives_articles").insert([payload]);
+      }
+      setArticleForm(emptyArticle);
+      setArticleEditing(null);
+      setArticleImageFile(null);
+      setArticleMsg(articleEditing ? "Article modifié !" : "Article ajouté !");
+      await fetchArticles();
+    } catch (err) { setArticleMsg(err.message || "Une erreur est survenue."); }
+    finally { setArticleSaving(false); }
+  }
+
+  function editArticle(article) {
+    setArticleEditing(article.id);
+    setArticleForm({
+      category:   article.category,
+      title_fr:   article.title_fr,
+      title_en:   article.title_en,
+      date:       article.date,
+      author:     article.author,
+      tag_fr:     article.tag_fr,
+      tag_en:     article.tag_en,
+      image_url:  article.image_url || "",
+      excerpt_fr: article.excerpt_fr || "",
+      excerpt_en: article.excerpt_en || "",
+      published:  article.published,
+      sort_order: article.sort_order ?? 0,
+    });
+    setArticleImageFile(null);
+    setArticleMsg("");
+  }
+
+  async function deleteArticle(id) {
+    if (!window.confirm("Supprimer cet article ?")) return;
+    await supabase.from("initiatives_articles").delete().eq("id", id);
+    await fetchArticles();
   }
 
   // --- Administration : équipe ---
@@ -627,6 +696,152 @@ export default function ProfilePage() {
           {/* ── TAB ADMIN ── */}
           {activeTab === "admin" && isAdmin && (
             <div>
+              {/* Sous-navigation admin */}
+              <div className="profile-page__tabs" style={{ marginBottom: "24px" }}>
+                <button
+                  className={`profile-page__tab ${adminSection === "equipe" ? "profile-page__tab--active" : ""}`}
+                  onClick={() => setAdminSection("equipe")}
+                >Équipe</button>
+                <button
+                  className={`profile-page__tab ${adminSection === "articles" ? "profile-page__tab--active" : ""}`}
+                  onClick={() => setAdminSection("articles")}
+                >Articles</button>
+              </div>
+
+              {/* ── SECTION ARTICLES ── */}
+              {adminSection === "articles" && (
+                <div>
+                  <h2 className="profile-page__section-title">
+                    {articleEditing ? "Modifier un article" : "Ajouter un article"}
+                  </h2>
+                  <form className="profile-page__form" onSubmit={saveArticle}>
+
+                    <div className="profile-page__row">
+                      <div className="profile-page__field">
+                        <label>Catégorie *</label>
+                        <select value={articleForm.category} onChange={(e) => setArticleForm((f) => ({ ...f, category: e.target.value }))} required>
+                          <option value="spotlight">Spotlight</option>
+                          <option value="fireside">Fireside</option>
+                          <option value="autres">Autres</option>
+                        </select>
+                      </div>
+                      <div className="profile-page__field">
+                        <label>Date *</label>
+                        <input type="date" value={articleForm.date} onChange={(e) => setArticleForm((f) => ({ ...f, date: e.target.value }))} required />
+                      </div>
+                    </div>
+
+                    <div className="profile-page__row">
+                      <div className="profile-page__field">
+                        <label>Titre (FR) *</label>
+                        <input value={articleForm.title_fr} onChange={(e) => setArticleForm((f) => ({ ...f, title_fr: e.target.value }))} required />
+                      </div>
+                      <div className="profile-page__field">
+                        <label>Titre (EN) *</label>
+                        <input value={articleForm.title_en} onChange={(e) => setArticleForm((f) => ({ ...f, title_en: e.target.value }))} required />
+                      </div>
+                    </div>
+
+                    <div className="profile-page__row">
+                      <div className="profile-page__field">
+                        <label>Tag (FR)</label>
+                        <input value={articleForm.tag_fr} onChange={(e) => setArticleForm((f) => ({ ...f, tag_fr: e.target.value }))} placeholder="Ex: Spotlight" />
+                      </div>
+                      <div className="profile-page__field">
+                        <label>Tag (EN)</label>
+                        <input value={articleForm.tag_en} onChange={(e) => setArticleForm((f) => ({ ...f, tag_en: e.target.value }))} placeholder="Ex: Spotlight" />
+                      </div>
+                    </div>
+
+                    <div className="profile-page__field">
+                      <label>Auteur</label>
+                      <input value={articleForm.author} onChange={(e) => setArticleForm((f) => ({ ...f, author: e.target.value }))} />
+                    </div>
+
+                    <div className="profile-page__field">
+                      <label>Extrait (FR)</label>
+                      <textarea className="profile-page__textarea" rows={3} value={articleForm.excerpt_fr} onChange={(e) => setArticleForm((f) => ({ ...f, excerpt_fr: e.target.value }))} />
+                    </div>
+                    <div className="profile-page__field">
+                      <label>Extrait (EN)</label>
+                      <textarea className="profile-page__textarea" rows={3} value={articleForm.excerpt_en} onChange={(e) => setArticleForm((f) => ({ ...f, excerpt_en: e.target.value }))} />
+                    </div>
+
+                    <div className="profile-page__field">
+                      <label>Image</label>
+                      <div className="profile-page__img-upload">
+                        {(articleImageFile ? URL.createObjectURL(articleImageFile) : articleForm.image_url) && (
+                          <img
+                            src={articleImageFile ? URL.createObjectURL(articleImageFile) : articleForm.image_url}
+                            alt="Aperçu"
+                            className="profile-page__img-preview"
+                            style={{ aspectRatio: "16/9", objectFit: "cover" }}
+                          />
+                        )}
+                        <label className="profile-page__photo-btn">
+                          {articleImageFile || articleForm.image_url ? "Changer l'image" : "Choisir une image"}
+                          <input type="file" accept="image/*" style={{ display: "none" }}
+                            onChange={(e) => {
+                              const f = e.target.files[0];
+                              if (f) setArticleCropSrc(URL.createObjectURL(f));
+                            }} />
+                        </label>
+                        <input value={articleForm.image_url} onChange={(e) => setArticleForm((f) => ({ ...f, image_url: e.target.value }))} placeholder="ou coller une URL d'image" style={{ marginTop: "8px" }} />
+                      </div>
+                    </div>
+
+                    <div className="profile-page__row">
+                      <div className="profile-page__field">
+                        <label>Ordre d'affichage</label>
+                        <input type="number" value={articleForm.sort_order} onChange={(e) => setArticleForm((f) => ({ ...f, sort_order: e.target.value }))} min="0" />
+                      </div>
+                      <div className="profile-page__field" style={{ justifyContent: "flex-end", display: "flex", alignItems: "center", gap: "8px", paddingTop: "20px" }}>
+                        <input type="checkbox" id="published" checked={articleForm.published} onChange={(e) => setArticleForm((f) => ({ ...f, published: e.target.checked }))} />
+                        <label htmlFor="published">Publié</label>
+                      </div>
+                    </div>
+
+                    {articleMsg && <p className={articleMsg.includes("!") ? "profile-page__success" : "profile-page__error"}>{articleMsg}</p>}
+                    <div className="profile-page__row">
+                      <button type="submit" className="profile-page__btn" disabled={articleSaving}>
+                        {articleSaving ? "Enregistrement…" : articleEditing ? "Modifier" : "Ajouter"}
+                      </button>
+                      {articleEditing && (
+                        <button type="button" className="profile-page__btn" style={{ background: "#888" }}
+                          onClick={() => { setArticleEditing(null); setArticleForm(emptyArticle); setArticleImageFile(null); setArticleMsg(""); }}>
+                          Annuler
+                        </button>
+                      )}
+                    </div>
+                  </form>
+
+                  <hr className="profile-page__section-divider" />
+                  <h2 className="profile-page__section-title">Articles ({articles.length})</h2>
+                  {articles.length === 0 ? (
+                    <p style={{ color: "#999" }}>Aucun article pour l'instant.</p>
+                  ) : (
+                    <div className="profile-page__list">
+                      {articles.map((a) => (
+                        <div className="profile-page__list-item" key={a.id} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                          {a.image_url && <img src={a.image_url} alt={a.title_fr} style={{ width: 60, height: 38, objectFit: "cover", borderRadius: 4 }} />}
+                          <div style={{ flex: 1 }}>
+                            <strong>{a.title_fr}</strong>
+                            <span style={{ marginLeft: 8, fontSize: "0.8rem", color: "#777" }}>
+                              {a.category} — {a.date} {!a.published && "· non publié"}
+                            </span>
+                          </div>
+                          <button className="profile-page__photo-btn" onClick={() => editArticle(a)}>Modifier</button>
+                          <button className="profile-page__photo-btn" style={{ background: "#e53" }} onClick={() => deleteArticle(a.id)}>Supprimer</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* ── SECTION ÉQUIPE ── */}
+              {adminSection === "equipe" && (
+              <div>
               <h2 className="profile-page__section-title">
                 {teamEditing ? "Modifier un membre" : "Ajouter un membre"}
               </h2>
@@ -754,6 +969,9 @@ export default function ProfilePage() {
                 </div>
               )}
             </div>
+            )}
+
+          </div>
           )}
 
         </div>
@@ -769,6 +987,18 @@ export default function ProfilePage() {
             setTeamCropSrc(null);
           }}
           onCancel={() => setTeamCropSrc(null)}
+        />
+      )}
+
+      {articleCropSrc && (
+        <ImageCropper
+          imageSrc={articleCropSrc}
+          aspect={600 / 380}
+          onDone={(croppedFile) => {
+            setArticleImageFile(croppedFile);
+            setArticleCropSrc(null);
+          }}
+          onCancel={() => setArticleCropSrc(null)}
         />
       )}
     </>
