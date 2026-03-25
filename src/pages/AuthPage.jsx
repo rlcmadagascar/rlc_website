@@ -122,7 +122,7 @@ export default function AuthPage() {
       <main id="main-content" tabIndex={-1} className="auth-page">
         <div className="auth-card">
           <div className="auth-card__logo">
-            <img src="/logo_rlc.png" alt="RLC Madagascar" />
+            <img src="/logo_rlc.webp" alt="RLC Madagascar" />
           </div>
 
           {/* ── TABS login / register ── */}

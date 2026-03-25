@@ -55,7 +55,7 @@ export default function Navbar() {
     <header className="navbar">
       <div className="navbar__inner">
         <Link to="/" className="navbar__logo">
-          <img src="/logo_rlc.png" alt="RLC Madagascar Chapter" className="navbar__logo-img" />
+          <img src="/logo_rlc.webp" alt="RLC Madagascar Chapter" className="navbar__logo-img" fetchpriority="high" />
         </Link>
 
         <button

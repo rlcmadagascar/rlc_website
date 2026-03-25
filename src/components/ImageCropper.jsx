@@ -2,23 +2,29 @@ import { useState, useCallback } from "react";
 import Cropper from "react-easy-crop";
 import "./ImageCropper.css";
 
-async function getCroppedBlob(imageSrc, pixelCrop) {
+async function getCroppedBlob(imageSrc, pixelCrop, maxDimension = 1200) {
   const image = new Image();
   image.src = imageSrc;
   await new Promise((resolve) => { image.onload = resolve; });
 
-  const canvas = document.createElement("canvas");
-  canvas.width = pixelCrop.width;
-  canvas.height = pixelCrop.height;
-  const ctx = canvas.getContext("2d");
+  let outW = pixelCrop.width;
+  let outH = pixelCrop.height;
+  if (outW > maxDimension || outH > maxDimension) {
+    const ratio = Math.min(maxDimension / outW, maxDimension / outH);
+    outW = Math.round(outW * ratio);
+    outH = Math.round(outH * ratio);
+  }
 
-  ctx.drawImage(
+  const canvas = document.createElement("canvas");
+  canvas.width = outW;
+  canvas.height = outH;
+  canvas.getContext("2d").drawImage(
     image,
     pixelCrop.x, pixelCrop.y, pixelCrop.width, pixelCrop.height,
-    0, 0, pixelCrop.width, pixelCrop.height
+    0, 0, outW, outH
   );
 
-  return new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.92));
+  return new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.85));
 }
 
 export default function ImageCropper({ imageSrc, aspect = 1, onDone, onCancel }) {
@@ -32,7 +38,7 @@ export default function ImageCropper({ imageSrc, aspect = 1, onDone, onCancel })
 
   async function handleDone() {
     const blob = await getCroppedBlob(imageSrc, croppedAreaPixels);
-    const file = new File([blob], "photo.jpg", { type: "image/jpeg" });
+    const file = new File([blob], "photo.webp", { type: "image/webp" });
     onDone(file);
   }
 

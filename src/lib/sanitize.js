@@ -17,6 +17,36 @@ const SUPABASE_STORAGE_RE =
  * Checks file size and magic bytes (actual file content), not just the extension.
  * Returns an error string if invalid, null if valid.
  */
+/**
+ * Resizes and compresses an image file to WebP.
+ * Returns a new File capped at maxWidth × maxHeight at the given quality.
+ */
+export async function compressImage(file, { maxWidth = 1200, maxHeight = 1200, quality = 0.85 } = {}) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let { width, height } = img;
+      if (width > maxWidth || height > maxHeight) {
+        const ratio = Math.min(maxWidth / width, maxHeight / height);
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob) => resolve(new File([blob], file.name.replace(/\.[^.]+$/, ".webp"), { type: "image/webp" })),
+        "image/webp",
+        quality
+      );
+    };
+    img.src = url;
+  });
+}
+
 export async function validateImageFile(file) {
   const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
   if (file.size > MAX_SIZE) return "Le fichier dépasse 5 Mo.";

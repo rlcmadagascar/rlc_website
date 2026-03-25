@@ -14,7 +14,7 @@ export default function About() {
             <p>{t.about.program}</p>
           </div>
           <div className="about__image">
-            <img src="/group_photo.jpg" alt="YALI RLC Southern Africa" />
+            <img src="/group_photo.webp" alt="YALI RLC Southern Africa" loading="lazy" />
           </div>
         </div>
       </div>

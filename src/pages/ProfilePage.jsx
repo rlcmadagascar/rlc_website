@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
-import { isSafeAvatarUrl, validateImageFile } from "../lib/sanitize";
+import { isSafeAvatarUrl, validateImageFile, compressImage } from "../lib/sanitize";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SEOHead from "../components/SEOHead";
@@ -150,9 +150,14 @@ export default function ProfilePage() {
   async function uploadFile(file, path, bucket = "avatars") {
     const validationError = await validateImageFile(file);
     if (validationError) throw new Error(validationError);
-    const ext = file.name.split(".").pop();
-    const filePath = `${path}/${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from(bucket).upload(filePath, file, { upsert: true });
+    const isAvatar = bucket === "avatars";
+    const compressed = await compressImage(file, {
+      maxWidth:  isAvatar ? 400 : 1200,
+      maxHeight: isAvatar ? 400 : 900,
+      quality: 0.85,
+    });
+    const filePath = `${path}/${Date.now()}.webp`;
+    const { error } = await supabase.storage.from(bucket).upload(filePath, compressed, { upsert: true });
     if (error) throw error;
     return supabase.storage.from(bucket).getPublicUrl(filePath).data.publicUrl;
   }

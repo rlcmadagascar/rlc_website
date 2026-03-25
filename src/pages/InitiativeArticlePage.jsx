@@ -101,7 +101,7 @@ export default function InitiativeArticlePage() {
           </div>
 
           <div className="iarticle-image-wrap">
-            <img src={getImage(article)} alt={getTitle(article)} className="iarticle-image" />
+            <img src={getImage(article)} alt={getTitle(article)} className="iarticle-image" loading="lazy" />
           </div>
 
           <div className="iarticle-content">

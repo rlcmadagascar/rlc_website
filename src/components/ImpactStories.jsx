@@ -38,7 +38,7 @@ export default function ImpactStories() {
               <p className="stories__quote-text">{testimonials[current].quote}</p>
               <div className="stories__author">
                 {isSafeAvatarUrl(testimonials[current].avatar)
-                  ? <img src={testimonials[current].avatar} alt={testimonials[current].name} className="stories__avatar" />
+                  ? <img src={testimonials[current].avatar} alt={testimonials[current].name} className="stories__avatar" loading="lazy" />
                   : <div className="stories__avatar stories__avatar--placeholder">👤</div>
                 }
                 <div className="stories__author-info">

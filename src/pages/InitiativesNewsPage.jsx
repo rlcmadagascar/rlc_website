@@ -133,7 +133,7 @@ export default function InitiativesNewsPage({ category }) {
                 {articles.map((article) => (
                   <article className="inews-card" key={article.id}>
                     <div className="inews-card__image-wrap">
-                      <img src={getImage(article)} alt={getTitle(article)} className="inews-card__image" />
+                      <img src={getImage(article)} alt={getTitle(article)} className="inews-card__image" loading="lazy" />
                       <span className="inews-card__tag">{getTag(article)}</span>
                     </div>
                     <div className="inews-card__body">

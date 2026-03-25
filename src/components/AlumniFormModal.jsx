@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabase";
-import { validateImageFile } from "../lib/sanitize";
+import { validateImageFile, compressImage } from "../lib/sanitize";
 import "./AlumniFormModal.css";
 
 const TRACKS = [
@@ -63,11 +63,11 @@ export default function AlumniFormModal({ onClose, onSubmit }) {
     if (!photoFile) return null;
     const validationError = await validateImageFile(photoFile);
     if (validationError) throw new Error(validationError);
-    const ext = photoFile.name.split(".").pop();
-    const filePath = `alumni/${Date.now()}.${ext}`;
+    const compressed = await compressImage(photoFile, { maxWidth: 400, maxHeight: 400, quality: 0.85 });
+    const filePath = `alumni/${Date.now()}.webp`;
     const { error } = await supabase.storage
       .from("avatars")
-      .upload(filePath, photoFile, { upsert: true });
+      .upload(filePath, compressed, { upsert: true });
     if (error) throw new Error(error.message);
     const { data: { publicUrl } } = supabase.storage
       .from("avatars")

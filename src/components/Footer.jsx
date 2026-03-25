@@ -9,7 +9,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer__inner container">
         <div className="footer__brand">
-          <img src="/logo_rlc.png" alt="RLC Madagascar Chapter" className="footer__logo-img" />
+          <img src="/logo_rlc.webp" alt="RLC Madagascar Chapter" className="footer__logo-img" loading="lazy" />
           <p className="footer__address">{t.footer.address}</p>
           <p className="footer__hours">{t.footer.hours}</p>
         </div>

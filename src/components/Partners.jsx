@@ -2,9 +2,9 @@ import { useLang } from "../context/LangContext";
 import "./Partners.css";
 
 const logos = [
-  { src: "/logo_unisa.jpg", alt: "UNISA - University of South Africa" },
-  { src: "/log_yc.jpg", alt: "YC" },
-  { src: "/logo_musea.jpeg", alt: "MUSEA - Madagascar United States Exchange Alumni" },
+  { src: "/logo_unisa.webp", alt: "UNISA - University of South Africa" },
+  { src: "/log_yc.webp", alt: "YC" },
+  { src: "/logo_musea.webp", alt: "MUSEA - Madagascar United States Exchange Alumni" },
 ];
 
 export default function Partners() {
@@ -18,7 +18,7 @@ export default function Partners() {
           <div className="partners__track">
             {[...logos, ...logos, ...logos, ...logos].map((logo, i) => (
               <div className="partners__logo" key={i}>
-                <img src={logo.src} alt={logo.alt} />
+                <img src={logo.src} alt={logo.alt} loading="lazy" />
               </div>
             ))}
           </div>

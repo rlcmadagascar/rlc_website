@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url("/fond_accueil.jpg") center center / cover no-repeat;
+  background: url("/fond_accueil.webp") center center / cover no-repeat;
   overflow: hidden;
 }
 

@@ -90,7 +90,7 @@ export default function TeamPage() {
             <div className="team-page__bureau-row">
               {members.bureau.map((member) => (
                 <div className="team-page__bureau-card" key={member.id}>
-                  {isSafeAvatarUrl(member.avatar) && <img src={member.avatar} alt={member.name} className="team-page__bureau-avatar" />}
+                  {isSafeAvatarUrl(member.avatar) && <img src={member.avatar} alt={member.name} className="team-page__bureau-avatar" loading="lazy" />}
                   <h3 className="team-page__bureau-name">{member.name}</h3>
                   <span className="team-page__bureau-role">{lang === "en" ? (member.role_en || member.role) : member.role}</span>
                   <a href={member.linkedin} className="team-page__linkedin-btn" target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn de ${member.name}`}>
@@ -110,7 +110,7 @@ export default function TeamPage() {
             <div className="team-page__coordinators-grid">
               {members.coordinator.map((member) => (
                 <div className="team-page__coordinator-card" key={member.id}>
-                  {isSafeAvatarUrl(member.avatar) && <img src={member.avatar} alt={member.name} className="team-page__coordinator-avatar" />}
+                  {isSafeAvatarUrl(member.avatar) && <img src={member.avatar} alt={member.name} className="team-page__coordinator-avatar" loading="lazy" />}
                   <h3 className="team-page__coordinator-name">{member.name}</h3>
                   <span className="team-page__coordinator-portfolio">{lang === "en" ? (member.portfolio_en || member.portfolio) : member.portfolio}</span>
                   <a href={member.linkedin} className="team-page__linkedin-btn" target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn de ${member.name}`}>
@@ -130,7 +130,7 @@ export default function TeamPage() {
             <div className="team-page__focal-grid">
               {members.focal_point.map((member) => (
                 <div className="team-page__focal-card" key={member.id}>
-                  {isSafeAvatarUrl(member.avatar) && <img src={member.avatar} alt={member.name} className="team-page__focal-avatar" />}
+                  {isSafeAvatarUrl(member.avatar) && <img src={member.avatar} alt={member.name} className="team-page__focal-avatar" loading="lazy" />}
                   <div className="team-page__focal-info">
                     <span className="team-page__focal-name">{member.name}</span>
                     <span className="team-page__focal-region">{member.region}</span>
@@ -152,7 +152,7 @@ export default function TeamPage() {
             <div className="team-page__past-grid">
               {members.past_coordinator.map((member) => (
                 <div className="team-page__past-card" key={member.id}>
-                  {isSafeAvatarUrl(member.avatar) && <img src={member.avatar} alt={member.name} className="team-page__past-avatar" />}
+                  {isSafeAvatarUrl(member.avatar) && <img src={member.avatar} alt={member.name} className="team-page__past-avatar" loading="lazy" />}
                   <div className="team-page__past-info">
                     <span className="team-page__past-name">{member.name}</span>
                     <span className="team-page__past-period">{member.period}</span>

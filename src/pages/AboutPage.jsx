@@ -28,7 +28,7 @@ export default function AboutPage() {
 
         {/* Hero image */}
         <div className="about-page__hero">
-          <img src="/group_photo.jpg" alt="RLC Southern Africa" />
+          <img src="/group_photo.webp" alt="RLC Southern Africa" fetchpriority="high" />
           <div className="about-page__hero-overlay">
             <h1>{c.title}</h1>
           </div>
@@ -44,7 +44,7 @@ export default function AboutPage() {
               <p>{c.story.text}</p>
             </div>
             <div className="about-page__section-image">
-              <img src="/photo-expo.jpg" alt="YALI Expo" />
+              <img src="/photo-expo.webp" alt="YALI Expo" loading="lazy" />
             </div>
           </section>
 
@@ -87,7 +87,7 @@ export default function AboutPage() {
             <h2 className="section-title">Partenaire</h2>
             <div className="partners__logos-static">
               <div className="partners__logo">
-                <img src="/logo_unisa.jpg" alt="UNISA - University of South Africa" />
+                <img src="/logo_unisa.webp" alt="UNISA - University of South Africa" loading="lazy" />
               </div>
             </div>
           </div>
