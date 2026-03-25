@@ -1,0 +1,84 @@
+.img-cropper__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.img-cropper__modal {
+  background: #fff;
+  border-radius: 12px;
+  width: min(480px, 95vw);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.img-cropper__title {
+  padding: 16px 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  border-bottom: 1px solid #eee;
+  margin: 0;
+}
+
+.img-cropper__crop-area {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background: #222;
+}
+
+.img-cropper__controls {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.img-cropper__zoom-label {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.img-cropper__zoom {
+  width: 100%;
+  cursor: pointer;
+  accent-color: #1a5276;
+}
+
+.img-cropper__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.img-cropper__btn {
+  padding: 9px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.img-cropper__btn--cancel {
+  background: #eee;
+  color: #333;
+}
+
+.img-cropper__btn--cancel:hover {
+  background: #ddd;
+}
+
+.img-cropper__btn--done {
+  background: #1a5276;
+  color: #fff;
+}
+
+.img-cropper__btn--done:hover {
+  background: #154360;
+}

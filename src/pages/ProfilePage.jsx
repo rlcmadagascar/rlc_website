@@ -6,6 +6,7 @@ import { isSafeAvatarUrl, validateImageFile } from "../lib/sanitize";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SEOHead from "../components/SEOHead";
+import ImageCropper from "../components/ImageCropper";
 import "./ProfilePage.css";
 
 const TRACKS = [
@@ -38,9 +39,11 @@ const TABS = [
 
 const emptyInitiative = { title: "", sector: "", region: "", tag: "", excerpt: "", description: "" };
 const emptyTestimonial = { quote: "" };
+const emptyTeamMember = { category: "bureau", name: "", role: "", portfolio: "", region: "", period: "", avatar: "", linkedin: "", sort_order: 0 };
 
 export default function ProfilePage() {
   const { user, signOut } = useAuth();
+  const isAdmin = user?.app_metadata?.role === 'admin';
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -82,9 +85,19 @@ export default function ProfilePage() {
   const [pwSaving, setPwSaving] = useState(false);
   const [pwMsg, setPwMsg] = useState("");
 
+  // Administration
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [teamForm, setTeamForm] = useState(emptyTeamMember);
+  const [teamEditing, setTeamEditing] = useState(null);
+  const [teamPhotoFile, setTeamPhotoFile] = useState(null);
+  const [teamCropSrc, setTeamCropSrc] = useState(null);
+  const [teamSaving, setTeamSaving] = useState(false);
+  const [teamMsg, setTeamMsg] = useState("");
+
   useEffect(() => {
     if (!user) { navigate("/auth"); return; }
     fetchAll();
+    if (isAdmin) fetchTeam();
   }, [user]);
 
   async function fetchAll() {
@@ -232,6 +245,57 @@ export default function ProfilePage() {
     setPwSaving(false);
   }
 
+  // --- Administration : équipe ---
+  async function fetchTeam() {
+    const { data } = await supabase.from("team_members").select("*").order("sort_order", { ascending: true });
+    if (data) setTeamMembers(data);
+  }
+
+  async function saveTeamMember(e) {
+    e.preventDefault();
+    if (!teamForm.name.trim()) return;
+    setTeamSaving(true); setTeamMsg("");
+    try {
+      let avatar = teamForm.avatar;
+      if (teamPhotoFile) avatar = await uploadFile(teamPhotoFile, "team");
+      const payload = { ...teamForm, avatar, sort_order: Number(teamForm.sort_order) };
+      if (teamEditing) {
+        await supabase.from("team_members").update(payload).eq("id", teamEditing);
+      } else {
+        await supabase.from("team_members").insert([payload]);
+      }
+      setTeamForm(emptyTeamMember);
+      setTeamEditing(null);
+      setTeamPhotoFile(null);
+      setTeamMsg(teamEditing ? "Membre modifié !" : "Membre ajouté !");
+      await fetchTeam();
+    } catch (err) { setTeamMsg(err.message || "Une erreur est survenue."); }
+    finally { setTeamSaving(false); }
+  }
+
+  function editTeamMember(member) {
+    setTeamEditing(member.id);
+    setTeamForm({
+      category:   member.category,
+      name:       member.name,
+      role:       member.role || "",
+      portfolio:  member.portfolio || "",
+      region:     member.region || "",
+      period:     member.period || "",
+      avatar:     member.avatar || "",
+      linkedin:   member.linkedin || "",
+      sort_order: member.sort_order ?? 0,
+    });
+    setTeamMsg("");
+    setTeamPhotoFile(null);
+  }
+
+  async function deleteTeamMember(id) {
+    if (!window.confirm("Supprimer ce membre ?")) return;
+    await supabase.from("team_members").delete().eq("id", id);
+    await fetchTeam();
+  }
+
   // --- Témoignages ---
   async function saveTestimonial(e) {
     e.preventDefault();
@@ -291,7 +355,7 @@ export default function ProfilePage() {
 
           {/* TABS */}
           <div className="profile-page__tabs">
-            {TABS.map((tab) => (
+            {[...TABS, ...(isAdmin ? [{ key: "admin", label: "Administration" }] : [])].map((tab) => (
               <button
                 key={tab.key}
                 className={`profile-page__tab ${activeTab === tab.key ? "profile-page__tab--active" : ""}`}
@@ -558,9 +622,141 @@ export default function ProfilePage() {
             </div>
           )}
 
+          {/* ── TAB ADMIN ── */}
+          {activeTab === "admin" && isAdmin && (
+            <div>
+              <h2 className="profile-page__section-title">
+                {teamEditing ? "Modifier un membre" : "Ajouter un membre"}
+              </h2>
+
+              <form className="profile-page__form" onSubmit={saveTeamMember}>
+                <div className="profile-page__row">
+                  <div className="profile-page__field">
+                    <label>Catégorie *</label>
+                    <select value={teamForm.category} onChange={(e) => setTeamForm((f) => ({ ...f, category: e.target.value }))} required>
+                      <option value="bureau">Bureau</option>
+                      <option value="coordinator">Coordinateur</option>
+                      <option value="focal_point">Point focal</option>
+                      <option value="past_coordinator">Ancien coordinateur</option>
+                    </select>
+                  </div>
+                  <div className="profile-page__field">
+                    <label>Ordre d'affichage</label>
+                    <input type="number" value={teamForm.sort_order} onChange={(e) => setTeamForm((f) => ({ ...f, sort_order: e.target.value }))} min="0" />
+                  </div>
+                </div>
+
+                <div className="profile-page__field">
+                  <label>Nom complet *</label>
+                  <input value={teamForm.name} onChange={(e) => setTeamForm((f) => ({ ...f, name: e.target.value }))} required />
+                </div>
+
+                {teamForm.category === "bureau" && (
+                  <div className="profile-page__field">
+                    <label>Rôle</label>
+                    <input value={teamForm.role} onChange={(e) => setTeamForm((f) => ({ ...f, role: e.target.value }))} placeholder="Ex: Président" />
+                  </div>
+                )}
+                {teamForm.category === "coordinator" && (
+                  <div className="profile-page__field">
+                    <label>Portefeuille</label>
+                    <input value={teamForm.portfolio} onChange={(e) => setTeamForm((f) => ({ ...f, portfolio: e.target.value }))} placeholder="Ex: Entrepreneuriat" />
+                  </div>
+                )}
+                {teamForm.category === "focal_point" && (
+                  <div className="profile-page__field">
+                    <label>Région</label>
+                    <select value={teamForm.region} onChange={(e) => setTeamForm((f) => ({ ...f, region: e.target.value }))}>
+                      <option value="">Sélectionner</option>
+                      {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
+                    </select>
+                  </div>
+                )}
+                {teamForm.category === "past_coordinator" && (
+                  <div className="profile-page__field">
+                    <label>Période</label>
+                    <input value={teamForm.period} onChange={(e) => setTeamForm((f) => ({ ...f, period: e.target.value }))} placeholder="Ex: 2020–2022" />
+                  </div>
+                )}
+
+                <div className="profile-page__field">
+                  <label>LinkedIn</label>
+                  <input value={teamForm.linkedin} onChange={(e) => setTeamForm((f) => ({ ...f, linkedin: e.target.value }))} placeholder="https://linkedin.com/in/..." />
+                </div>
+
+                <div className="profile-page__field">
+                  <label>Photo</label>
+                  <div className="profile-page__img-upload">
+                    {(teamPhotoFile ? URL.createObjectURL(teamPhotoFile) : teamForm.avatar) && (
+                      <img src={teamPhotoFile ? URL.createObjectURL(teamPhotoFile) : teamForm.avatar} alt="Aperçu" className="profile-page__img-preview" />
+                    )}
+                    <label className="profile-page__photo-btn">
+                      {teamPhotoFile || teamForm.avatar ? "Changer la photo" : "Choisir une photo"}
+                      <input type="file" accept="image/*" style={{ display: "none" }}
+                        onChange={(e) => {
+                          const f = e.target.files[0];
+                          if (f) setTeamCropSrc(URL.createObjectURL(f));
+                        }} />
+                    </label>
+                    <input value={teamForm.avatar} onChange={(e) => setTeamForm((f) => ({ ...f, avatar: e.target.value }))} placeholder="ou coller une URL d'image" style={{ marginTop: "8px" }} />
+                  </div>
+                </div>
+
+                {teamMsg && <p className={teamMsg.includes("!") ? "profile-page__success" : "profile-page__error"}>{teamMsg}</p>}
+
+                <div className="profile-page__row">
+                  <button type="submit" className="profile-page__btn" disabled={teamSaving}>
+                    {teamSaving ? "Enregistrement…" : teamEditing ? "Modifier" : "Ajouter"}
+                  </button>
+                  {teamEditing && (
+                    <button type="button" className="profile-page__btn" style={{ background: "#888" }}
+                      onClick={() => { setTeamEditing(null); setTeamForm(emptyTeamMember); setTeamPhotoFile(null); setTeamMsg(""); }}>
+                      Annuler
+                    </button>
+                  )}
+                </div>
+              </form>
+
+              <hr className="profile-page__section-divider" />
+              <h2 className="profile-page__section-title">Membres ({teamMembers.length})</h2>
+
+              {teamMembers.length === 0 ? (
+                <p style={{ color: "#999" }}>Aucun membre pour l'instant.</p>
+              ) : (
+                <div className="profile-page__list">
+                  {teamMembers.map((m) => (
+                    <div className="profile-page__list-item" key={m.id} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                      {m.avatar && <img src={m.avatar} alt={m.name} style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover" }} />}
+                      <div style={{ flex: 1 }}>
+                        <strong>{m.name}</strong>
+                        <span style={{ marginLeft: 8, fontSize: "0.8rem", color: "#777" }}>
+                          {m.category}{m.role ? ` — ${m.role}` : ""}{m.portfolio ? ` — ${m.portfolio}` : ""}{m.region ? ` — ${m.region}` : ""}{m.period ? ` — ${m.period}` : ""}
+                        </span>
+                      </div>
+                      <button className="profile-page__photo-btn" onClick={() => editTeamMember(m)}>Modifier</button>
+                      <button className="profile-page__photo-btn" style={{ background: "#e53" }} onClick={() => deleteTeamMember(m.id)}>Supprimer</button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
         </div>
       </main>
       <Footer />
+
+      {teamCropSrc && (
+        <ImageCropper
+          imageSrc={teamCropSrc}
+          aspect={1}
+          onDone={(croppedFile) => {
+            setTeamPhotoFile(croppedFile);
+            setTeamCropSrc(null);
+          }}
+          onCancel={() => setTeamCropSrc(null)}
+        />
+      )}
     </>
   );
 }
