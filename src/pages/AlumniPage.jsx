@@ -12,6 +12,46 @@ const SECTOR_COLORS = [
   "#f0c040", "#8b00ea", "#00a86b", "#e03a3a", "#f09000",
 ];
 
+const EXCERPT_LIMIT = 150;
+
+function InitiativeModal({ item, onClose }) {
+  useEffect(() => {
+    function onKey(e) { if (e.key === "Escape") onClose(); }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div className="alumni-modal__overlay" onClick={onClose}>
+      <div className="alumni-modal__box" onClick={(e) => e.stopPropagation()}>
+        <button className="alumni-modal__close" onClick={onClose} aria-label="Fermer">✕</button>
+        {item.image && <img src={item.image} alt={item.title} className="alumni-modal__img" />}
+        <h3 className="alumni-modal__title">{item.title}</h3>
+        <div className="alumni-modal__text">
+          {item.excerpt.split(/\n+/).map((para, i) => para.trim() && <p key={i}>{para.trim()}</p>)}
+        </div>
+        <div className="alumni-modal__tags">
+          {item.sector && <span className="alumni-page__tag">{item.sector}</span>}
+          {item.tag && <span className="alumni-page__tag">{item.tag}</span>}
+          {item.region && <span className="alumni-page__tag">{item.region}</span>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InitiativeExcerpt({ text, onReadMore }) {
+  if (!text) return null;
+  return (
+    <p className="alumni-page__initiative-desc">
+      {text.length <= EXCERPT_LIMIT ? text : text.slice(0, EXCERPT_LIMIT) + "…"}
+      {text.length > EXCERPT_LIMIT && (
+        <>{" "}<button className="alumni-page__read-more" onClick={onReadMore}>Lire la suite</button></>
+      )}
+    </p>
+  );
+}
+
 export default function AlumniPage() {
   const { t } = useLang();
   const p = t.alumniPage;
@@ -20,6 +60,7 @@ export default function AlumniPage() {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [modalItem, setModalItem] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -36,6 +77,7 @@ export default function AlumniPage() {
 
   return (
     <>
+      {modalItem && <InitiativeModal item={modalItem} onClose={() => setModalItem(null)} />}
       <SEOHead
         title="Alumni & Initiatives"
         description="Initiatives et témoignages des alumni YALI RLC Madagascar — +600 jeunes leaders malgaches actifs dans les 21 régions en entrepreneuriat, gouvernance et engagement civique."
@@ -85,7 +127,7 @@ export default function AlumniPage() {
                         </div>
                       )}
                       <h3 className="alumni-page__initiative-title">{item.title}</h3>
-                      {item.excerpt && <p className="alumni-page__initiative-desc">{item.excerpt}</p>}
+                      <InitiativeExcerpt text={item.excerpt} onReadMore={() => setModalItem(item)} />
                       <div className="alumni-page__initiative-tags">
                         {item.sector && <span className="alumni-page__tag">{item.sector}</span>}
                         {item.tag && <span className="alumni-page__tag">{item.tag}</span>}
