@@ -39,6 +39,7 @@ export default function DirectoryPage() {
       const { data, error } = await supabase
         .from("alumni")
         .select("id, name, avatar, cohort, cohort_type, location, region, track, position, organization, linkedin")
+        .eq("in_directory", true)
         .order("cohort", { ascending: true });
 if (!error) setAlumni(data);
       setLoading(false);

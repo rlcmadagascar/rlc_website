@@ -180,7 +180,7 @@ export default function ProfilePage() {
         await supabase.from("alumni").update(payload).eq("id", alumniRecord.id);
       } else {
         const { data } = await supabase.from("alumni")
-          .insert([{ ...payload, avatar: avatarUrl ?? `https://i.pravatar.cc/150?u=${encodeURIComponent(name)}` }])
+          .insert([{ ...payload, avatar: avatarUrl ?? `https://i.pravatar.cc/150?u=${encodeURIComponent(name)}`, in_directory: false }])
           .select().single();
         setAlumniRecord(data);
       }
@@ -205,6 +205,7 @@ export default function ProfilePage() {
         organization: annuaire.organization,
         email: annuaire.email,
         phone: annuaire.phone,
+        in_directory: true,
       };
       if (alumniRecord) {
         await supabase.from("alumni").update(payload).eq("id", alumniRecord.id);
