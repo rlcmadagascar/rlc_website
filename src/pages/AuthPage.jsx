@@ -68,9 +68,15 @@ export default function AuthPage() {
       password: form.password,
     });
     if (error) {
-      setError("Une erreur est survenue. Vérifiez votre email.");
+      if (error.message?.toLowerCase().includes("already registered") || error.message?.toLowerCase().includes("user already")) {
+        setError("Cet email est déjà utilisé. Essayez de vous connecter.");
+      } else if (error.message?.toLowerCase().includes("signup") && error.message?.toLowerCase().includes("disabled")) {
+        setError("Les inscriptions sont actuellement désactivées.");
+      } else {
+        setError(error.message || "Une erreur est survenue. Vérifiez votre email.");
+      }
     } else {
-      setSuccess("Compte créé ! Vérifiez votre email pour confirmer votre inscription.");
+      setSuccess("Compte créé ! Vous pouvez maintenant vous connecter.");
     }
     setLoading(false);
   }
