@@ -202,6 +202,44 @@ export const translations = {
         subtitle: "News, events and collaborations from the RLC Madagascar Chapter",
       },
     },
+    kodata: {
+      tag: "Alumni Initiative",
+      subtitle: "An alumni initiative for data enthusiasts",
+      presentation: {
+        title: "Presentation",
+        p1: "Kodata is a community of data enthusiasts, created to connect, train and grow those who believe in the power of data to transform Madagascar.",
+        p2: "It brings together data analysts, data engineers, data scientists and digital enthusiasts, in Madagascar and beyond. Membership is free and open to all data enthusiasts.",
+      },
+      quote: {
+        text: "« Data is the new lever for development. Kodata was born from the conviction that Madagascar can be a major player. »",
+        author: "— The founders of Kodata",
+      },
+      mission: {
+        label: "Mission",
+        text: "Create an inclusive space where data enthusiasts in Madagascar can learn, share and collaborate — regardless of their level or sector.",
+      },
+      vision: {
+        label: "Vision",
+        text: "Make Madagascar a player in the data economy in Africa, by building a strong, engaged and continent-wide recognized community.",
+      },
+      offers: {
+        title: "What Kodata offers",
+        discussions: {
+          title: "Discussions",
+          desc: "Exchange best practices, tools and data trends with peers who share your passions.",
+        },
+        events: {
+          title: "Events",
+          desc: "Participate in meetups, workshops and hackathons organized by and for the Malagasy data community.",
+        },
+        projects: {
+          title: "Collaborative projects",
+          desc: "Contribute to concrete data projects that have a real impact on Madagascar's development.",
+        },
+      },
+      more: "For more information, visit",
+      back: "Back to home",
+    },
     footer: {
       address: "Antananarivo, Madagascar",
       hours: "Mon–Fri, 8am–4:30pm",
@@ -413,6 +451,44 @@ export const translations = {
         title: "Kodata",
         subtitle: "Actualités, événements et collaborations du RLC Madagascar Chapter",
       },
+    },
+    kodata: {
+      tag: "Initiative Alumni",
+      subtitle: "Une initiative des alumni pour les passionnés de la Data",
+      presentation: {
+        title: "Présentation",
+        p1: "Kodata est une communauté de passionnés de la data, créée pour connecter, former et faire grandir celles et ceux qui croient au pouvoir des données pour transformer Madagascar.",
+        p2: "Elle réunit data analysts, data engineers, data scientists et curieux du numérique, à Madagascar et au-delà. L'adhésion est gratuite et ouverte à tous les passionnés de data.",
+      },
+      quote: {
+        text: "« La donnée est le nouveau levier du développement. Kodata est né de la conviction que Madagascar peut en être un acteur majeur. »",
+        author: "— Les fondateurs de Kodata",
+      },
+      mission: {
+        label: "Mission",
+        text: "Créer un espace inclusif où les passionnés de la data à Madagascar peuvent apprendre, partager et collaborer — quel que soit leur niveau ou leur secteur.",
+      },
+      vision: {
+        label: "Vision",
+        text: "Faire de Madagascar un acteur de l'économie de la donnée en Afrique, en bâtissant une communauté forte, engagée et reconnue à l'échelle du continent.",
+      },
+      offers: {
+        title: "Ce que propose Kodata",
+        discussions: {
+          title: "Discussions",
+          desc: "Échangez sur les meilleures pratiques, les outils et les tendances data avec des pairs qui partagent vos passions.",
+        },
+        events: {
+          title: "Événements",
+          desc: "Participez à des meetups, workshops et hackathons organisés par et pour la communauté data malgache.",
+        },
+        projects: {
+          title: "Projets collaboratifs",
+          desc: "Contribuez à des projets data concrets qui ont un impact réel sur le développement de Madagascar.",
+        },
+      },
+      more: "Pour en savoir plus, visitez",
+      back: "Retour à l'accueil",
     },
     footer: {
       address: "Antananarivo, Madagascar",

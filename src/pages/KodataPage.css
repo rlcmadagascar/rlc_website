@@ -1,0 +1,501 @@
+/* ── HERO ─────────────────────────────────────────────────────── */
+.kodata-hero {
+  position: relative;
+  background: linear-gradient(135deg, #003d6b 0%, #009dea 100%);
+  color: #fff;
+  text-align: center;
+  padding: 120px 20px 0;
+  overflow: hidden;
+}
+
+.kodata-hero__inner {
+  position: relative;
+  z-index: 1;
+  padding-bottom: 60px;
+}
+
+.kodata-hero__tag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 5px 18px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+.kodata-hero h1 {
+  font-size: 3.2rem;
+  font-weight: 800;
+  margin: 0 0 16px;
+  line-height: 1.1;
+}
+
+.kodata-hero__subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0 auto 40px;
+  max-width: 500px;
+}
+
+.kodata-hero__stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.kodata-hero__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.kodata-hero__stat strong {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.kodata-hero__stat span {
+  font-size: 0.78rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kodata-hero__wave {
+  position: relative;
+  z-index: 1;
+}
+
+.kodata-hero__wave svg {
+  display: block;
+  width: 100%;
+  height: 60px;
+}
+
+/* ── CONTAINER ───────────────────────────────────────────────── */
+.kodata-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 20px 100px;
+}
+
+.kodata-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #009dea;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 56px;
+  transition: color 0.2s;
+}
+
+.kodata-back:hover { color: #003d6b; }
+
+/* ── SECTIONS ────────────────────────────────────────────────── */
+.kodata-section {
+  margin-bottom: 64px;
+}
+
+.kodata-section__title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #003d6b;
+  margin: 0 0 28px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid #009dea;
+}
+
+.kodata-text {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.75;
+  margin: 0 0 16px;
+}
+
+/* ── QUOTE ───────────────────────────────────────────────────── */
+.kodata-quote {
+  background: #f0f8ff;
+  border-left: 4px solid #009dea;
+  border-radius: 0 10px 10px 0;
+  margin: 32px 0 48px;
+  padding: 24px 28px;
+}
+
+.kodata-quote p {
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #003d6b;
+  margin: 0 0 10px;
+  line-height: 1.6;
+}
+
+.kodata-quote cite {
+  font-size: 0.85rem;
+  color: #666;
+  font-style: normal;
+}
+
+/* ── MISSION / VISION ────────────────────────────────────────── */
+.kodata-mv {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kodata-mv__card {
+  background: #003d6b;
+  color: #fff;
+  border-radius: 12px;
+  padding: 32px 28px;
+}
+
+.kodata-mv__card--vision {
+  background: #009dea;
+}
+
+.kodata-mv__card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 0 0 14px;
+  opacity: 0.8;
+}
+
+.kodata-mv__card p {
+  font-size: 0.97rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── FEATURES ────────────────────────────────────────────────── */
+.kodata-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.kodata-feature {
+  background: #fff;
+  border: 1.5px solid #e5eaf2;
+  border-radius: 12px;
+  padding: 28px 24px;
+  text-align: center;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.kodata-feature:hover {
+  box-shadow: 0 8px 28px rgba(0,61,107,0.1);
+  transform: translateY(-3px);
+}
+
+.kodata-feature__icon {
+  font-size: 1.8rem;
+  color: #009dea;
+  margin-bottom: 14px;
+}
+
+.kodata-feature h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #003d6b;
+  margin: 0 0 10px;
+}
+
+.kodata-feature p {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── VALUES ──────────────────────────────────────────────────── */
+.kodata-values {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.kodata-value {
+  background: #f7f9fc;
+  border-radius: 10px;
+  padding: 20px 22px;
+}
+
+.kodata-value__name {
+  display: block;
+  font-weight: 800;
+  color: #003d6b;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+}
+
+.kodata-value p {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── STEPS ───────────────────────────────────────────────────── */
+.kodata-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.kodata-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  background: #f7f9fc;
+  border-radius: 10px;
+  padding: 20px 24px;
+}
+
+.kodata-step__number {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: #003d6b;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.kodata-step h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #003d6b;
+  margin: 0 0 4px;
+}
+
+.kodata-step p {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.kodata-cta-wrap {
+  text-align: center;
+}
+
+.kodata-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #009dea;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 14px 32px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.kodata-cta:hover {
+  background: #003d6b;
+  transform: translateY(-2px);
+}
+
+/* ── TIMELINE ────────────────────────────────────────────────── */
+.kodata-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 28px;
+  border-left: 3px solid #009dea;
+  padding-left: 24px;
+}
+
+.kodata-timeline__item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kodata-timeline__year {
+  font-weight: 800;
+  color: #009dea;
+  font-size: 1rem;
+}
+
+.kodata-timeline__item p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── TABLE ───────────────────────────────────────────────────── */
+.kodata-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 28px;
+}
+
+.kodata-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.kodata-table th {
+  background: #003d6b;
+  color: #fff;
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 600;
+}
+
+.kodata-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5eaf2;
+  color: #444;
+  vertical-align: top;
+}
+
+.kodata-table tr:last-child td {
+  border-bottom: none;
+}
+
+.kodata-table tr:nth-child(even) td {
+  background: #f7f9fc;
+}
+
+.kodata-badge {
+  background: #e8f4fd;
+  color: #009dea;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.kodata-partner-types h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #003d6b;
+  margin: 0 0 12px;
+}
+
+.kodata-partner-types ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kodata-partner-types li {
+  font-size: 0.9rem;
+  color: #555;
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.6;
+}
+
+.kodata-partner-types li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: #009dea;
+}
+
+/* ── ROWS texte + image ───────────────────────────────────────── */
+.kodata-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.kodata-row--reverse {
+  direction: rtl;
+}
+
+.kodata-row--reverse > * {
+  direction: ltr;
+}
+
+.kodata-row__img img {
+  width: 100%;
+  border-radius: 14px;
+  object-fit: cover;
+  aspect-ratio: 4 / 3;
+  box-shadow: 0 8px 32px rgba(0, 61, 107, 0.12);
+}
+
+@media (max-width: 768px) {
+  .kodata-row,
+  .kodata-row--reverse {
+    grid-template-columns: 1fr;
+    direction: ltr;
+  }
+  .kodata-row--reverse > * {
+    direction: ltr;
+  }
+}
+
+/* ── EN SAVOIR PLUS ──────────────────────────────────────────── */
+.kodata-more {
+  text-align: center;
+  padding: 48px 20px;
+  background: linear-gradient(135deg, #003d6b 0%, #009dea 100%);
+  border-radius: 16px;
+  color: #fff;
+}
+
+.kodata-more p {
+  font-size: 1rem;
+  margin: 0 0 12px;
+  opacity: 0.85;
+}
+
+.kodata-more__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.2rem;
+  text-decoration: none;
+  border-bottom: 2px solid rgba(255,255,255,0.5);
+  padding-bottom: 2px;
+  transition: border-color 0.2s;
+}
+
+.kodata-more__link:hover {
+  border-color: #fff;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .kodata-hero h1 { font-size: 2.2rem; }
+  .kodata-hero__stats { gap: 24px; }
+  .kodata-mv { grid-template-columns: 1fr; }
+  .kodata-features { grid-template-columns: 1fr; }
+  .kodata-values { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .kodata-hero h1 { font-size: 1.8rem; }
+}

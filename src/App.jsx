@@ -18,6 +18,7 @@ import InitiativePage from "./pages/InitiativePage";
 import TeamPage from "./pages/TeamPage";
 import InitiativesNewsPage from "./pages/InitiativesNewsPage";
 import InitiativeArticlePage from "./pages/InitiativeArticlePage";
+import KodataPage from "./pages/KodataPage";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
 import AccessibilityWidget from "./components/AccessibilityWidget";
@@ -86,7 +87,8 @@ export default function App() {
             <Route path="/alumni/:index" element={<InitiativePage />} />
             <Route path="/initiatives/spotlight" element={<InitiativesNewsPage category="spotlight" />} />
             <Route path="/initiatives/fireside" element={<InitiativesNewsPage category="fireside" />} />
-            <Route path="/initiatives/autres" element={<InitiativesNewsPage category="autres" />} />
+            <Route path="/initiatives/kodata" element={<KodataPage />} />
+            <Route path="/initiatives/autres" element={<Navigate to="/initiatives/kodata" replace />} />
             <Route path="/initiatives/article/:id" element={<InitiativeArticlePage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/auth" element={<AuthPage />} />
