@@ -28,7 +28,7 @@ export default function Partners() {
           <div className="partners__track">
             {[...logos, ...logos, ...logos, ...logos].map((logo, i) => (
               <div className="partners__logo" key={i}>
-                <img src={logo.src} alt={logo.alt} loading="lazy" />
+                <img src={logo.src} alt={logo.alt} loading="eager" />
               </div>
             ))}
           </div>
