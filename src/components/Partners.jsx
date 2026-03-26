@@ -5,6 +5,16 @@ const logos = [
   { src: "/logo_unisa.webp", alt: "UNISA - University of South Africa" },
   { src: "/log_yc.webp", alt: "YC" },
   { src: "/logo_musea.webp", alt: "MUSEA - Madagascar United States Exchange Alumni" },
+  { src: "/logo_access.JPG", alt: "English Access Microscholarship Program" },
+  { src: "/logo_awep.JPG", alt: "African Women's Entrepreneurship Program" },
+  { src: "/logo_beat.JPG", alt: "OneBeat" },
+  { src: "/logo_cee.JPG", alt: "Community Engagement Exchange Program" },
+  { src: "/logo_fullbright.JPG", alt: "Fulbright Program" },
+  { src: "/logo_humphrey.JPG", alt: "Humphrey Fellowship" },
+  { src: "/logo_ivlp.JPG", alt: "International Visitor Leadership Program" },
+  { src: "/logo_mwf.JPG", alt: "Mandela Washington Fellowship" },
+  { src: "/logo_susi.JPG", alt: "Study of the U.S. Institutes" },
+  { src: "/logo-novity.png", alt: "Novity" },
 ];
 
 export default function Partners() {

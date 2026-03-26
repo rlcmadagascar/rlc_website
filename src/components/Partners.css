@@ -14,7 +14,7 @@
   align-items: center;
   gap: 64px;
   width: max-content;
-  animation: scroll-right 18s linear infinite;
+  animation: scroll-right 70s linear infinite;
 }
 
 .partners__track:hover {
@@ -42,7 +42,8 @@
   width: auto;
   max-width: 200px;
   object-fit: contain;
-  filter: grayscale(20%);
+  filter: grayscale(20%) brightness(1.2);
+  mix-blend-mode: multiply;
   transition: filter 0.2s, transform 0.2s;
 }
 
@@ -56,8 +57,18 @@
   max-width: 300px;
 }
 
+.partners__logo img[src="/logo_humphrey.JPG"] {
+  height: 160px;
+  max-width: 320px;
+}
+
+.partners__logo img[src="/logo-novity.png"] {
+  height: 160px;
+  max-width: 320px;
+}
+
 .partners__logo img:hover {
-  filter: grayscale(0%);
+  filter: grayscale(0%) brightness(1.2);
   transform: scale(1.05);
 }
 
