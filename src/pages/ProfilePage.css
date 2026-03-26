@@ -255,6 +255,17 @@
   margin: 0;
 }
 
+.profile-page__privacy-note {
+  font-size: 0.82rem;
+  color: #888;
+  background: #f5f5f5;
+  border-left: 3px solid #ccc;
+  padding: 8px 12px;
+  margin: 4px 0 8px;
+  border-radius: 4px;
+  line-height: 1.5;
+}
+
 .profile-page__warn {
   color: #f09000;
   background: #fff8e8;

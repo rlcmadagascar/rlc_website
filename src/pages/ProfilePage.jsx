@@ -62,7 +62,7 @@ export default function ProfilePage() {
 
   // Annuaire
   const [annuaire, setAnnuaire] = useState({
-    cohort_type: "", cohort_number: "", location: "", region: "", track: "", position: "", organization: "",
+    cohort_type: "", cohort_number: "", location: "", region: "", track: "", position: "", organization: "", email: "", phone: "",
   });
   const [annuaireSaving, setAnnuaireSaving] = useState(false);
   const [annuaireMsg, setAnnuaireMsg] = useState("");
@@ -133,6 +133,8 @@ export default function ProfilePage() {
         track: alumni.track || "",
         position: alumni.position || "",
         organization: alumni.organization || "",
+        email: alumni.email || "",
+        phone: alumni.phone || "",
       });
     }
     if (init) setInitiatives(init);
@@ -201,6 +203,8 @@ export default function ProfilePage() {
         track: annuaire.track,
         position: annuaire.position,
         organization: annuaire.organization,
+        email: annuaire.email,
+        phone: annuaire.phone,
       };
       if (alumniRecord) {
         await supabase.from("alumni").update(payload).eq("id", alumniRecord.id);
@@ -567,6 +571,20 @@ export default function ProfilePage() {
                 <label>Organisation *</label>
                 <input value={annuaire.organization} onChange={(e) => setAnnuaire((a) => ({ ...a, organization: e.target.value }))} placeholder="Ex: ONG Mada Développement" required />
               </div>
+
+              <div className="profile-page__field">
+                <label>Email de contact *</label>
+                <input type="email" value={annuaire.email} onChange={(e) => setAnnuaire((a) => ({ ...a, email: e.target.value }))} placeholder="Ex: votre@email.com" required />
+              </div>
+
+              <div className="profile-page__field">
+                <label>Numéro de téléphone *</label>
+                <input type="tel" value={annuaire.phone} onChange={(e) => setAnnuaire((a) => ({ ...a, phone: e.target.value }))} placeholder="Ex: +261 34 00 000 00" required />
+              </div>
+
+              <p className="profile-page__privacy-note">
+                Ces informations sont strictement confidentielles et ne seront visibles que par l'équipe du RLC Madagascar Chapter. Elles ne seront utilisées que pour vous contacter si besoin.
+              </p>
 
               {annuaireMsg && <p className={annuaireMsg.includes("!") ? "profile-page__success" : "profile-page__error"}>{annuaireMsg}</p>}
               <button type="submit" className="profile-page__btn" disabled={annuaireSaving}>

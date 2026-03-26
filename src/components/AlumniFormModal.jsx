@@ -22,7 +22,7 @@ const REGIONS = [
 
 const empty = {
   name: "", cohort_type: "", cohort_number: "", track: "", region: "",
-  location: "", position: "", organization: "", linkedin: "",
+  location: "", position: "", organization: "", linkedin: "", email: "", phone: "",
 };
 
 export default function AlumniFormModal({ onClose, onSubmit }) {
@@ -44,6 +44,8 @@ export default function AlumniFormModal({ onClose, onSubmit }) {
     if (!form.location) e.location = "Champ requis";
     if (!form.position.trim()) e.position = "Champ requis";
     if (!form.organization.trim()) e.organization = "Champ requis";
+    if (!form.email.trim()) e.email = "Champ requis";
+    if (!form.phone.trim()) e.phone = "Champ requis";
     return e;
   }
 
@@ -96,6 +98,8 @@ export default function AlumniFormModal({ onClose, onSubmit }) {
         position: form.position,
         organization: form.organization,
         linkedin: form.linkedin,
+        email: form.email,
+        phone: form.phone,
         avatar: avatarUrl,
       };
 
@@ -228,6 +232,23 @@ export default function AlumniFormModal({ onClose, onSubmit }) {
                 <label>Profil LinkedIn</label>
                 <input name="linkedin" value={form.linkedin} onChange={handle} placeholder="https://linkedin.com/in/votre-profil" />
               </div>
+
+              {/* Contact privé */}
+              <div className="modal__field">
+                <label>Email de contact *</label>
+                <input type="email" name="email" value={form.email} onChange={handle} placeholder="Ex: votre@email.com" />
+                {errors.email && <span className="modal__error">{errors.email}</span>}
+              </div>
+
+              <div className="modal__field">
+                <label>Numéro de téléphone *</label>
+                <input type="tel" name="phone" value={form.phone} onChange={handle} placeholder="Ex: +261 34 00 000 00" />
+                {errors.phone && <span className="modal__error">{errors.phone}</span>}
+              </div>
+
+              <p className="modal__privacy-note">
+                Ces informations sont strictement confidentielles et ne seront visibles que par l'équipe du RLC Madagascar Chapter. Elles ne seront utilisées que pour vous contacter si besoin.
+              </p>
 
               {serverError && <p className="modal__error modal__error--server">{serverError}</p>}
 

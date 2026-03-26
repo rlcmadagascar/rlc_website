@@ -38,7 +38,7 @@ export default function DirectoryPage() {
     async function fetchAlumni() {
       const { data, error } = await supabase
         .from("alumni")
-        .select("*")
+        .select("id, name, avatar, cohort, cohort_type, location, region, track, position, organization, linkedin")
         .order("cohort", { ascending: true });
 if (!error) setAlumni(data);
       setLoading(false);
