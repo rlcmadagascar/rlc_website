@@ -287,7 +287,7 @@
 
   .navbar__dropdown-trigger {
     width: 100%;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   .navbar__dropdown-menu {
