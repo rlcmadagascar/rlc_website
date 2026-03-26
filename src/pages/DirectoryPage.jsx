@@ -7,7 +7,7 @@ import { supabase } from "../lib/supabase";
 import { isSafeAvatarUrl } from "../lib/sanitize";
 import "./DirectoryPage.css";
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 6;
 
 const TRACK_META = {
   "Business & Entrepreneuriat":        { bg: "#e8f6fd", color: "#009dea" },
