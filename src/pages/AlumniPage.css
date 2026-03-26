@@ -277,6 +277,75 @@
   color: #aaa;
 }
 
+/* ── ACTUALITÉS GRID ────────────────────────────────────────── */
+.alumni-page__actu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 28px;
+}
+
+.alumni-page__actu-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 61, 107, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.alumni-page__actu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 61, 107, 0.14);
+}
+
+.alumni-page__actu-img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+}
+
+.alumni-page__actu-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 8px;
+}
+
+.alumni-page__actu-date {
+  font-size: 0.78rem;
+  color: #009dea;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.alumni-page__actu-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #003d6b;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.alumni-page__actu-content {
+  font-size: 0.88rem;
+  color: #555;
+  line-height: 1.65;
+  margin: 0;
+  flex: 1;
+}
+
+.alumni-page__actu-link {
+  align-self: flex-start;
+  color: #009dea;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  margin-top: 4px;
+}
+.alumni-page__actu-link:hover { text-decoration: underline; }
+
 /* ── TESTIMONIALS CAROUSEL ──────────────────────────────────── */
 .alumni-page__carousel {
   position: relative;

@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
 import { isSafeAvatarUrl, validateImageFile, compressImage } from "../lib/sanitize";
+import { translateTexts } from "../lib/translate";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SEOHead from "../components/SEOHead";
@@ -41,6 +42,7 @@ const emptyInitiative = { title: "", sector: "", region: "", tag: "", excerpt: "
 const emptyTestimonial = { quote: "" };
 const emptyTeamMember = { category: "bureau", name: "", role: "", role_en: "", portfolio: "", portfolio_en: "", region: "", period: "", avatar: "", linkedin: "", sort_order: 0 };
 const emptyArticle = { category: "spotlight", title_fr: "", title_en: "", date: "", author: "RLC Madagascar Chapter", tag_fr: "", tag_en: "", image_url: "", excerpt_fr: "", excerpt_en: "", published: true, sort_order: 0 };
+const emptyActualite = { title: "", content: "", image: "", published_at: new Date().toISOString().slice(0, 10), link: "", published: true };
 
 export default function ProfilePage() {
   const { user, signOut } = useAuth();
@@ -107,10 +109,18 @@ export default function ProfilePage() {
   const [articleSaving, setArticleSaving] = useState(false);
   const [articleMsg, setArticleMsg] = useState("");
 
+  // Admin — Actualités
+  const [actualites, setActualites] = useState([]);
+  const [actualiteForm, setActualiteForm] = useState(emptyActualite);
+  const [actualiteEditing, setActualiteEditing] = useState(null);
+  const [actualiteImageFile, setActualiteImageFile] = useState(null);
+  const [actualiteSaving, setActualiteSaving] = useState(false);
+  const [actualiteMsg, setActualiteMsg] = useState("");
+
   useEffect(() => {
     if (!user) { navigate("/auth"); return; }
     fetchAll();
-    if (isAdmin) { fetchTeam(); fetchArticles(); }
+    if (isAdmin) { fetchTeam(); fetchArticles(); fetchActualites(); }
   }, [user]);
 
   async function fetchAll() {
@@ -229,11 +239,15 @@ export default function ProfilePage() {
     try {
       let imageUrl = "";
       if (initiativeImage) imageUrl = await uploadFile(initiativeImage, "initiatives");
+      const [title_en, excerpt_en, description_en] = await translateTexts([
+        initiative.title, initiative.excerpt, initiative.description,
+      ]);
       await supabase.from("initiatives").insert([{
         user_id: user.id,
         alumni_id: alumniRecord?.id ?? null,
         ...initiative,
         image: imageUrl,
+        title_en, excerpt_en, description_en,
       }]);
       setInitiative(emptyInitiative);
       setInitiativeImage(null);
@@ -324,6 +338,55 @@ export default function ProfilePage() {
     await fetchArticles();
   }
 
+  // --- Administration : actualités ---
+  async function fetchActualites() {
+    const { data } = await supabase.from("actualites").select("*").order("published_at", { ascending: false });
+    if (data) setActualites(data);
+  }
+
+  async function saveActualite(e) {
+    e.preventDefault();
+    if (!actualiteForm.title.trim()) return;
+    setActualiteSaving(true); setActualiteMsg("");
+    try {
+      let image = actualiteForm.image;
+      if (actualiteImageFile) image = await uploadFile(actualiteImageFile, "actualites", "article-images");
+      const [title_en, content_en] = await translateTexts([actualiteForm.title, actualiteForm.content]);
+      const payload = { ...actualiteForm, image, user_id: user.id, title_en, content_en };
+      if (actualiteEditing) {
+        await supabase.from("actualites").update(payload).eq("id", actualiteEditing);
+      } else {
+        await supabase.from("actualites").insert([payload]);
+      }
+      setActualiteForm(emptyActualite);
+      setActualiteEditing(null);
+      setActualiteImageFile(null);
+      setActualiteMsg(actualiteEditing ? "Actualité modifiée !" : "Actualité ajoutée !");
+      await fetchActualites();
+    } catch (err) { setActualiteMsg(err.message || "Une erreur est survenue."); }
+    finally { setActualiteSaving(false); }
+  }
+
+  function editActualite(item) {
+    setActualiteEditing(item.id);
+    setActualiteForm({
+      title: item.title,
+      content: item.content || "",
+      image: item.image || "",
+      published_at: item.published_at,
+      link: item.link || "",
+      published: item.published,
+    });
+    setActualiteImageFile(null);
+    setActualiteMsg("");
+  }
+
+  async function deleteActualite(id) {
+    if (!window.confirm("Supprimer cette actualité ?")) return;
+    await supabase.from("actualites").delete().eq("id", id);
+    await fetchActualites();
+  }
+
   // --- Administration : équipe ---
   async function fetchTeam() {
     const { data } = await supabase.from("team_members").select("*").order("sort_order", { ascending: true });
@@ -383,10 +446,12 @@ export default function ProfilePage() {
     if (!testimonial.quote.trim()) return;
     setTestimonialSaving(true); setTestimonialMsg("");
     try {
+      const [quote_en] = await translateTexts([testimonial.quote]);
       await supabase.from("testimonials").insert([{
         user_id: user.id,
         alumni_id: alumniRecord?.id ?? null,
         quote: testimonial.quote,
+        quote_en,
         name: name || user.email,
         avatar: alumniRecord?.avatar ?? null,
         cohort: alumniRecord?.cohort ?? null,
@@ -730,6 +795,10 @@ export default function ProfilePage() {
                   className={`profile-page__tab ${adminSection === "articles" ? "profile-page__tab--active" : ""}`}
                   onClick={() => setAdminSection("articles")}
                 >Articles</button>
+                <button
+                  className={`profile-page__tab ${adminSection === "actualites" ? "profile-page__tab--active" : ""}`}
+                  onClick={() => setAdminSection("actualites")}
+                >Actualités</button>
               </div>
 
               {/* ── SECTION ARTICLES ── */}
@@ -856,6 +925,97 @@ export default function ProfilePage() {
                           </div>
                           <button className="profile-page__photo-btn" onClick={() => editArticle(a)}>Modifier</button>
                           <button className="profile-page__photo-btn" style={{ background: "#e53" }} onClick={() => deleteArticle(a.id)}>Supprimer</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* ── SECTION ACTUALITÉS ── */}
+              {adminSection === "actualites" && (
+                <div>
+                  <h2 className="profile-page__section-title">
+                    {actualiteEditing ? "Modifier une actualité" : "Ajouter une actualité"}
+                  </h2>
+                  <form className="profile-page__form" onSubmit={saveActualite}>
+                    <div className="profile-page__field">
+                      <label>Titre *</label>
+                      <input value={actualiteForm.title} onChange={(e) => setActualiteForm((f) => ({ ...f, title: e.target.value }))} required />
+                    </div>
+
+                    <div className="profile-page__field">
+                      <label>Contenu</label>
+                      <textarea className="profile-page__textarea" rows={6} value={actualiteForm.content} onChange={(e) => setActualiteForm((f) => ({ ...f, content: e.target.value }))} placeholder="Décrivez l'actualité…" />
+                    </div>
+
+                    <div className="profile-page__row">
+                      <div className="profile-page__field">
+                        <label>Date de publication *</label>
+                        <input type="date" value={actualiteForm.published_at} onChange={(e) => setActualiteForm((f) => ({ ...f, published_at: e.target.value }))} required />
+                      </div>
+                      <div className="profile-page__field" style={{ display: "flex", alignItems: "center", gap: "8px", paddingTop: "20px" }}>
+                        <input type="checkbox" id="actualite-published" checked={actualiteForm.published} onChange={(e) => setActualiteForm((f) => ({ ...f, published: e.target.checked }))} />
+                        <label htmlFor="actualite-published">Publié</label>
+                      </div>
+                    </div>
+
+                    <div className="profile-page__field">
+                      <label>Lien externe (optionnel)</label>
+                      <input value={actualiteForm.link} onChange={(e) => setActualiteForm((f) => ({ ...f, link: e.target.value }))} placeholder="https://…" />
+                    </div>
+
+                    <div className="profile-page__field">
+                      <label>Image de couverture</label>
+                      <div className="profile-page__img-upload">
+                        {(actualiteImageFile ? URL.createObjectURL(actualiteImageFile) : actualiteForm.image) && (
+                          <img
+                            src={actualiteImageFile ? URL.createObjectURL(actualiteImageFile) : actualiteForm.image}
+                            alt="Aperçu"
+                            className="profile-page__img-preview"
+                            style={{ aspectRatio: "16/9", objectFit: "cover" }}
+                          />
+                        )}
+                        <label className="profile-page__photo-btn">
+                          {actualiteImageFile || actualiteForm.image ? "Changer l'image" : "Choisir une image"}
+                          <input type="file" accept="image/*" style={{ display: "none" }}
+                            onChange={(e) => { const f = e.target.files[0]; if (f) setActualiteImageFile(f); }} />
+                        </label>
+                        <input value={actualiteForm.image} onChange={(e) => setActualiteForm((f) => ({ ...f, image: e.target.value }))} placeholder="ou coller une URL d'image" style={{ marginTop: "8px" }} />
+                      </div>
+                    </div>
+
+                    {actualiteMsg && <p className={actualiteMsg.includes("!") ? "profile-page__success" : "profile-page__error"}>{actualiteMsg}</p>}
+                    <div className="profile-page__row">
+                      <button type="submit" className="profile-page__btn" disabled={actualiteSaving}>
+                        {actualiteSaving ? "Enregistrement…" : actualiteEditing ? "Modifier" : "Ajouter"}
+                      </button>
+                      {actualiteEditing && (
+                        <button type="button" className="profile-page__btn" style={{ background: "#888" }}
+                          onClick={() => { setActualiteEditing(null); setActualiteForm(emptyActualite); setActualiteImageFile(null); setActualiteMsg(""); }}>
+                          Annuler
+                        </button>
+                      )}
+                    </div>
+                  </form>
+
+                  <hr className="profile-page__section-divider" />
+                  <h2 className="profile-page__section-title">Actualités ({actualites.length})</h2>
+                  {actualites.length === 0 ? (
+                    <p style={{ color: "#999" }}>Aucune actualité pour l'instant.</p>
+                  ) : (
+                    <div className="profile-page__list">
+                      {actualites.map((a) => (
+                        <div className="profile-page__list-item" key={a.id} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                          {a.image && <img src={a.image} alt={a.title} style={{ width: 60, height: 38, objectFit: "cover", borderRadius: 4 }} />}
+                          <div style={{ flex: 1 }}>
+                            <strong>{a.title}</strong>
+                            <span style={{ marginLeft: 8, fontSize: "0.8rem", color: "#777" }}>
+                              {a.published_at} {!a.published && "· non publié"}
+                            </span>
+                          </div>
+                          <button className="profile-page__photo-btn" onClick={() => editActualite(a)}>Modifier</button>
+                          <button className="profile-page__photo-btn" style={{ background: "#e53" }} onClick={() => deleteActualite(a.id)}>Supprimer</button>
                         </div>
                       ))}
                     </div>

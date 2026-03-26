@@ -4,7 +4,6 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SEOHead from "../components/SEOHead";
 import { supabase } from "../lib/supabase";
-import { isSafeAvatarUrl } from "../lib/sanitize";
 import "./AlumniPage.css";
 
 const SECTOR_COLORS = [
@@ -15,6 +14,10 @@ const SECTOR_COLORS = [
 const EXCERPT_LIMIT = 150;
 
 function InitiativeModal({ item, onClose }) {
+  const { lang } = useLang();
+  const title = lang === "en" && item.title_en ? item.title_en : item.title;
+  const excerpt = lang === "en" && item.excerpt_en ? item.excerpt_en : item.excerpt;
+
   useEffect(() => {
     function onKey(e) { if (e.key === "Escape") onClose(); }
     document.addEventListener("keydown", onKey);
@@ -25,10 +28,10 @@ function InitiativeModal({ item, onClose }) {
     <div className="alumni-modal__overlay" onClick={onClose}>
       <div className="alumni-modal__box" onClick={(e) => e.stopPropagation()}>
         <button className="alumni-modal__close" onClick={onClose} aria-label="Fermer">✕</button>
-        {item.image && <img src={item.image} alt={item.title} className="alumni-modal__img" />}
-        <h3 className="alumni-modal__title">{item.title}</h3>
+        {item.image && <img src={item.image} alt={title} className="alumni-modal__img" />}
+        <h3 className="alumni-modal__title">{title}</h3>
         <div className="alumni-modal__text">
-          {item.excerpt.split(/\n+/).map((para, i) => para.trim() && <p key={i}>{para.trim()}</p>)}
+          {excerpt && excerpt.split(/\n+/).map((para, i) => para.trim() && <p key={i}>{para.trim()}</p>)}
         </div>
         <div className="alumni-modal__tags">
           {item.sector && <span className="alumni-page__tag">{item.sector}</span>}
@@ -53,23 +56,22 @@ function InitiativeExcerpt({ text, onReadMore }) {
 }
 
 export default function AlumniPage() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const p = t.alumniPage;
 
   const [initiatives, setInitiatives] = useState([]);
-  const [testimonials, setTestimonials] = useState([]);
+  const [actualites, setActualites] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [modalItem, setModalItem] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
-      const [{ data: init }, { data: testi }] = await Promise.all([
+      const [{ data: init }, { data: actu }] = await Promise.all([
         supabase.from("initiatives").select("*, alumni(name, avatar, cohort)").order("created_at", { ascending: false }),
-        supabase.from("testimonials").select("*").order("created_at", { ascending: false }).limit(10),
+        supabase.from("actualites").select("*").eq("published", true).order("published_at", { ascending: false }),
       ]);
       if (init) setInitiatives(init);
-      if (testi) setTestimonials(testi);
+      if (actu) setActualites(actu);
       setLoading(false);
     }
     fetchData();
@@ -126,8 +128,13 @@ export default function AlumniPage() {
                           ✦
                         </div>
                       )}
-                      <h3 className="alumni-page__initiative-title">{item.title}</h3>
-                      <InitiativeExcerpt text={item.excerpt} onReadMore={() => setModalItem(item)} />
+                      <h3 className="alumni-page__initiative-title">
+                        {lang === "en" && item.title_en ? item.title_en : item.title}
+                      </h3>
+                      <InitiativeExcerpt
+                        text={lang === "en" && item.excerpt_en ? item.excerpt_en : item.excerpt}
+                        onReadMore={() => setModalItem(item)}
+                      />
                       <div className="alumni-page__initiative-tags">
                         {item.sector && <span className="alumni-page__tag">{item.sector}</span>}
                         {item.tag && <span className="alumni-page__tag">{item.tag}</span>}
@@ -149,69 +156,46 @@ export default function AlumniPage() {
           </div>
         </section>
 
-        {/* TÉMOIGNAGES CAROUSEL */}
+        {/* ACTUALITÉS */}
         <section className="alumni-page__section alumni-page__section--white">
           <div className="alumni-page__container">
-            <h2 className="alumni-page__section-title">{p.testimonialsTitle}</h2>
+            <h2 className="alumni-page__section-title">Actualités</h2>
             <div className="alumni-page__divider" />
 
             {loading ? (
               <p className="alumni-page__empty">Chargement…</p>
-            ) : testimonials.length === 0 ? (
-              <p className="alumni-page__empty">Aucun témoignage soumis pour le moment.</p>
+            ) : actualites.length === 0 ? (
+              <p className="alumni-page__empty">Aucune actualité pour le moment.</p>
             ) : (
-              <div className="alumni-page__carousel">
-                <button
-                  className="alumni-page__carousel-btn alumni-page__carousel-btn--prev"
-                  onClick={() => setCurrentSlide((c) => (c - 1 + testimonials.length) % testimonials.length)}
-                  aria-label="Précédent"
-                >
-                  ‹
-                </button>
-
-                <div className="alumni-page__carousel-track">
-                  {testimonials.map((item, i) => (
-                    <div
-                      key={item.id}
-                      className={`alumni-page__testimonial-card alumni-page__testimonial-card--slide ${i === currentSlide ? "alumni-page__testimonial-card--active" : ""}`}
-                    >
-                      <div className="alumni-page__testimonial-quote-mark">&ldquo;</div>
-                      <p className="alumni-page__testimonial-text">{item.quote}</p>
-                      <div className="alumni-page__testimonial-author">
-                        {isSafeAvatarUrl(item.avatar)
-                          ? <img src={item.avatar} alt={item.name} className="alumni-page__testimonial-avatar" />
-                          : <div className="alumni-page__testimonial-avatar alumni-page__testimonial-avatar--placeholder">👤</div>
-                        }
-                        <div className="alumni-page__testimonial-info">
-                          <span className="alumni-page__testimonial-name">{item.name ?? "Alumni RLC"}</span>
-                          <span className="alumni-page__testimonial-meta">
-                            {[item.cohort, item.region].filter(Boolean).join(" · ")}
-                          </span>
-                        </div>
-                      </div>
+              <div className="alumni-page__actu-grid">
+                {actualites.map((item) => (
+                  <div className="alumni-page__actu-card" key={item.id}>
+                    {item.image && (
+                      <img src={item.image} alt={item.title} className="alumni-page__actu-img" />
+                    )}
+                    <div className="alumni-page__actu-body">
+                      <span className="alumni-page__actu-date">
+                        {new Date(item.published_at).toLocaleDateString(lang === "en" ? "en-GB" : "fr-FR", { day: "numeric", month: "long", year: "numeric" })}
+                      </span>
+                      <h3 className="alumni-page__actu-title">
+                        {lang === "en" && item.title_en ? item.title_en : item.title}
+                      </h3>
+                      {item.content && (
+                        <p className="alumni-page__actu-content">
+                          {(() => {
+                            const txt = lang === "en" && item.content_en ? item.content_en : item.content;
+                            return txt.length > 180 ? txt.slice(0, 180) + "…" : txt;
+                          })()}
+                        </p>
+                      )}
+                      {item.link && (
+                        <a href={item.link} target="_blank" rel="noopener noreferrer" className="alumni-page__actu-link">
+                          {lang === "en" ? "Read more →" : "Lire la suite →"}
+                        </a>
+                      )}
                     </div>
-                  ))}
-                </div>
-
-                <button
-                  className="alumni-page__carousel-btn alumni-page__carousel-btn--next"
-                  onClick={() => setCurrentSlide((c) => (c + 1) % testimonials.length)}
-                  aria-label="Suivant"
-                >
-                  ›
-                </button>
-
-                {/* Dots */}
-                <div className="alumni-page__carousel-dots">
-                  {testimonials.map((_, i) => (
-                    <button
-                      key={i}
-                      className={`alumni-page__carousel-dot ${i === currentSlide ? "alumni-page__carousel-dot--active" : ""}`}
-                      onClick={() => setCurrentSlide(i)}
-                      aria-label={`Témoignage ${i + 1}`}
-                    />
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
