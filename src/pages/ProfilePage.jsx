@@ -354,9 +354,11 @@ export default function ProfilePage() {
       const [title_en, content_en] = await translateTexts([actualiteForm.title, actualiteForm.content]);
       const payload = { ...actualiteForm, image, user_id: user.id, title_en, content_en };
       if (actualiteEditing) {
-        await supabase.from("actualites").update(payload).eq("id", actualiteEditing);
+        const { error } = await supabase.from("actualites").update(payload).eq("id", actualiteEditing);
+        if (error) throw error;
       } else {
-        await supabase.from("actualites").insert([payload]);
+        const { error } = await supabase.from("actualites").insert([payload]);
+        if (error) throw error;
       }
       setActualiteForm(emptyActualite);
       setActualiteEditing(null);

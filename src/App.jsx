@@ -21,6 +21,7 @@ import InitiativeArticlePage from "./pages/InitiativeArticlePage";
 import KodataPage from "./pages/KodataPage";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
+import ActualitePage from "./pages/ActualitePage";
 import AccessibilityWidget from "./components/AccessibilityWidget";
 
 const ORGANIZATION_JSON_LD = {
@@ -90,6 +91,7 @@ export default function App() {
             <Route path="/initiatives/kodata" element={<KodataPage />} />
             <Route path="/initiatives/autres" element={<Navigate to="/initiatives/kodata" replace />} />
             <Route path="/initiatives/article/:id" element={<InitiativeArticlePage />} />
+            <Route path="/actualite/:id" element={<ActualitePage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />

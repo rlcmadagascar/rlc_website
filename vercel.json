@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/actualite/:id", "destination": "/api/actualite/:id" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [

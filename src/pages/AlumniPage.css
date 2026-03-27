@@ -346,6 +346,51 @@
 }
 .alumni-page__actu-link:hover { text-decoration: underline; }
 
+.alumni-page__actu-footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+button.alumni-page__actu-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.alumni-page__actu-share {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.alumni-page__actu-share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #fff;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.alumni-page__actu-share-btn:hover {
+  opacity: 0.85;
+  transform: scale(1.1);
+}
+
+.alumni-page__actu-share-btn--fb {
+  background: #1877f2;
+}
+
+.alumni-page__actu-share-btn--li {
+  background: #0a66c2;
+}
+
 /* ── TESTIMONIALS CAROUSEL ──────────────────────────────────── */
 .alumni-page__carousel {
   position: relative;

@@ -104,3 +104,37 @@
 .iarticle-status--error {
   color: #e53e3e;
 }
+
+.actu-share-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid #e8edf2;
+}
+
+.actu-share-label {
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: 600;
+}
+
+.actu-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.actu-share-btn:hover {
+  opacity: 0.85;
+  transform: scale(1.04);
+}
+.actu-share-btn--fb { background: #1877f2; }
+.actu-share-btn--li { background: #0a66c2; }
