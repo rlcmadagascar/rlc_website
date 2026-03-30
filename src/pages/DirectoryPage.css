@@ -77,6 +77,115 @@
   transform: translateY(-2px);
 }
 
+/* ── Stats en temps réel ── */
+.dir-stats {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #fff;
+  border: 1px solid #e4edf5;
+  border-radius: 14px;
+  padding: 16px 24px;
+  box-shadow: 0 2px 16px rgba(0, 61, 107, 0.07);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.dir-stats__live {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #00a86b;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  flex-shrink: 0;
+}
+
+.dir-stats__pulse {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00a86b;
+  animation: dir-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes dir-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 168, 107, 0.4); }
+  50%       { opacity: 0.7; transform: scale(0.85); box-shadow: 0 0 0 5px rgba(0, 168, 107, 0); }
+}
+
+.dir-stats__items {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.dir-stats__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+  gap: 2px;
+  flex: 1;
+  min-width: 80px;
+}
+
+.dir-stats__item strong {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #003d6b;
+  line-height: 1.1;
+}
+
+.dir-stats__item span {
+  font-size: 0.75rem;
+  color: #7a9ab8;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.dir-stats__sep {
+  width: 1px;
+  height: 36px;
+  background: #e4edf5;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .dir-stats {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .dir-stats__sep {
+    display: none;
+  }
+
+  .dir-stats__items {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .dir-stats__item {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    min-width: auto;
+    flex: none;
+  }
+
+  .dir-stats__item strong {
+    font-size: 1.1rem;
+  }
+}
+
 /* ── Filter bar ── */
 .dir-page__filters {
   display: flex;

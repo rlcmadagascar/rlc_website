@@ -35,17 +35,37 @@ export default function DirectoryPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
+    let cancelled = false;
+
     async function fetchAlumni() {
       const { data, error } = await supabase
         .from("alumni")
         .select("id, name, avatar, cohort, cohort_type, location, region, track, position, organization, linkedin")
         .eq("in_directory", true)
         .order("cohort", { ascending: true });
-if (!error) setAlumni(data);
-      setLoading(false);
+      if (!cancelled && !error) setAlumni(data ?? []);
+      if (!cancelled) setLoading(false);
     }
+
     fetchAlumni();
+
+    const channel = supabase
+      .channel("alumni-directory-realtime")
+      .on("postgres_changes", { event: "*", schema: "public", table: "alumni" }, fetchAlumni)
+      .subscribe();
+
+    return () => {
+      cancelled = true;
+      supabase.removeChannel(channel);
+    };
   }, []);
+
+  const stats = useMemo(() => ({
+    total: alumni.length,
+    regions: new Set(alumni.map((a) => a.region).filter(Boolean)).size,
+    senegal: alumni.filter((a) => a.location === "Sénégal").length,
+    southAfrica: alumni.filter((a) => a.location === "Afrique du Sud").length,
+  }), [alumni]);
 
   const allTracks = useMemo(() => [...new Set(alumni.map((a) => a.track))].sort(), [alumni]);
   const allRegions = useMemo(() => [...new Set(alumni.map((a) => a.region))].sort(), [alumni]);
@@ -100,6 +120,33 @@ if (!error) setAlumni(data);
         </div>
 
         <div className="dir-page__container">
+
+          {/* Stats en temps réel */}
+          {!loading && (
+            <div className="dir-stats">
+              <div className="dir-stats__items">
+                <div className="dir-stats__item">
+                  <strong>{stats.total}</strong>
+                  <span>Alumni</span>
+                </div>
+                <div className="dir-stats__sep" aria-hidden="true" />
+                <div className="dir-stats__item">
+                  <strong>{stats.regions}</strong>
+                  <span>{lang === "en" ? "Regions" : "Régions"}</span>
+                </div>
+                <div className="dir-stats__sep" aria-hidden="true" />
+                <div className="dir-stats__item">
+                  <strong>{stats.senegal}</strong>
+                  <span>🇸🇳 {lang === "en" ? "Senegal" : "Sénégal"}</span>
+                </div>
+                <div className="dir-stats__sep" aria-hidden="true" />
+                <div className="dir-stats__item">
+                  <strong>{stats.southAfrica}</strong>
+                  <span>🇿🇦 {lang === "en" ? "South Africa" : "Afrique du Sud"}</span>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Filter bar */}
           <div className="dir-page__filters">
