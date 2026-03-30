@@ -54,10 +54,8 @@ export default function Chapter() {
             <p>{c.text1}</p>
             <p>{c.text2}</p>
           </div>
-          <div className="chapter__stats">
-            {c.stats.map((s, i) => (
-              <CounterStat key={i} value={s.value} prefix={s.prefix} label={s.label} />
-            ))}
+          <div className="chapter__image">
+            <img src="/image_dakar.webp" alt="RLC Madagascar Chapter" />
           </div>
         </div>
       </div>
