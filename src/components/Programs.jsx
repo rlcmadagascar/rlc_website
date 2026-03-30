@@ -14,7 +14,7 @@ const TRACK_LABELS = {
 
 export default function Programs() {
   const { t } = useLang();
-  const [items, setItems] = useState(t.programs.items);
+  const [items, setItems] = useState(null);
 
   useEffect(() => {
     async function fetchStats() {
@@ -22,7 +22,10 @@ export default function Programs() {
         .from("alumni")
         .select("track");
 
-      if (error || !data || data.length === 0) return;
+      if (error || !data || data.length === 0) {
+        setItems(t.programs.items);
+        return;
+      }
 
       const counts = {};
       for (const row of data) {
@@ -50,7 +53,9 @@ export default function Programs() {
       <div className="container">
         <h2 className="section-title">{t.programs.title}</h2>
         <div className="programs__list">
-          {items.map((item, i) => (
+          {!items
+            ? null
+            : items.map((item, i) => (
             <div key={i} className="programs__item">
               <div className="programs__label">{item.label}</div>
               <div className="programs__bar-wrap">
